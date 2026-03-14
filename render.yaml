@@ -12,15 +12,25 @@ services:
     dockerContext: backend/ExpenseTracker
     dockerfilePath: backend/ExpenseTracker/Dockerfile
     plan: free
+    healthCheckPath: /api/expenses
     envVars:
-      # We explicitly set the JDBC URL to bypass Render's 'postgres://' DATABASE_URL
-      - key: SPRING_DATASOURCE_URL
-        value: jdbc:postgresql://expense-db:5432/expensetracker
-      - key: SPRING_DATASOURCE_USERNAME
+      - key: BULLET_DB_HOST
+        fromDatabase:
+          name: expense-db
+          property: host
+      - key: BULLET_DB_PORT
+        fromDatabase:
+          name: expense-db
+          property: port
+      - key: BULLET_DB_NAME
+        fromDatabase:
+          name: expense-db
+          property: database
+      - key: BULLET_DB_USER
         fromDatabase:
           name: expense-db
           property: user
-      - key: SPRING_DATASOURCE_PASSWORD
+      - key: BULLET_DB_PASS
         fromDatabase:
           name: expense-db
           property: password
@@ -44,4 +54,7 @@ services:
     plan: free
     envVars:
       - key: BACKEND_URL
-        value: http://backend:8080
+        fromService:
+          type: web
+          name: backend
+          property: host
