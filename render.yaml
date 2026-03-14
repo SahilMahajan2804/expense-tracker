@@ -13,23 +13,14 @@ services:
     dockerfilePath: backend/ExpenseTracker/Dockerfile
     plan: free
     envVars:
-      - key: RENDER_PG_HOST
-        fromDatabase:
-          name: expense-db
-          property: host
-      - key: RENDER_PG_PORT
-        fromDatabase:
-          name: expense-db
-          property: port
-      - key: RENDER_PG_DB
-        fromDatabase:
-          name: expense-db
-          property: database
-      - key: RENDER_PG_USER
+      # We explicitly set the JDBC URL to bypass Render's 'postgres://' DATABASE_URL
+      - key: SPRING_DATASOURCE_URL
+        value: jdbc:postgresql://expense-db:5432/expensetracker
+      - key: SPRING_DATASOURCE_USERNAME
         fromDatabase:
           name: expense-db
           property: user
-      - key: RENDER_PG_PASS
+      - key: SPRING_DATASOURCE_PASSWORD
         fromDatabase:
           name: expense-db
           property: password
