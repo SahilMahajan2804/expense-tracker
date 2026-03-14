@@ -16,7 +16,7 @@ public class EmailService {
 
     @Async
     public void sendMail(String to, String sub, String body) {
-        System.out.println("DEBUG: Attempting to send email to " + to + " with subject: " + sub);
+        System.out.println("DEBUG [" + Thread.currentThread().getName() + "]: Attempting to send email to " + to + " with subject: " + sub);
         try {
             MimeMessage message = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
