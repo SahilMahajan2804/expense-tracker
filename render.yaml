@@ -29,7 +29,7 @@ services:
         fromService:
           type: web
           name: frontend
-          property: host
+          property: url
       - key: SPRING_MAIL_HOST
         sync: false
       - key: SPRING_MAIL_PORT
