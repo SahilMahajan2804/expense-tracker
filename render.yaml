@@ -13,15 +13,15 @@ services:
     dockerfilePath: backend/ExpenseTracker/Dockerfile
     plan: free
     envVars:
-      - key: DB_HOST
+      - key: RENDER_DB_HOST
         fromDatabase:
           name: expense-db
           property: host
-      - key: DB_PORT
+      - key: RENDER_DB_PORT
         fromDatabase:
           name: expense-db
           property: port
-      - key: DB_NAME
+      - key: RENDER_DB_NAME
         fromDatabase:
           name: expense-db
           property: database
