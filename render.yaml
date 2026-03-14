@@ -51,4 +51,3 @@ services:
     dockerContext: frontend/expense-tracker-frontend
     dockerfilePath: frontend/expense-tracker-frontend/Dockerfile
     plan: free
-    plan: free
