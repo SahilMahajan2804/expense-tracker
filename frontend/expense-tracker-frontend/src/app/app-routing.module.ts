@@ -5,7 +5,7 @@ import { guestGuard } from './guards/guest.guard';
 
 // Auth Components
 import { LoginComponent } from '../app/components/auth/login/login.component';
-import { RegisterComponent } from './components/auth/register/register.components';
+import { RegisterComponent } from './components/auth/register/register.component';
 import { VerifyOtpComponent } from './components/auth/verify-otp/verify-otp.component';
 
 // Employee Components
