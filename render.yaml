@@ -13,10 +13,18 @@ services:
     dockerfilePath: backend/ExpenseTracker/Dockerfile
     plan: free
     envVars:
-      - key: SPRING_DATASOURCE_URL
+      - key: DB_HOST
         fromDatabase:
           name: expense-db
-          property: connectionString
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: expense-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: expense-db
+          property: databaseName
       - key: SPRING_DATASOURCE_USERNAME
         fromDatabase:
           name: expense-db
