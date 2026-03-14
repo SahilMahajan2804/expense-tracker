@@ -24,7 +24,7 @@ services:
       - key: DB_NAME
         fromDatabase:
           name: expense-db
-          property: databaseName
+          property: database
       - key: SPRING_DATASOURCE_USERNAME
         fromDatabase:
           name: expense-db
