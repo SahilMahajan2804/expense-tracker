@@ -1,11 +1,10 @@
-services:
-  # MySQL Database
-  - type: database
-    name: expense-db
+databases:
+  - name: expense-db
     databaseName: expensetracker
     user: root
     plan: free
 
+services:
   # Backend Service
   - type: web
     name: backend
