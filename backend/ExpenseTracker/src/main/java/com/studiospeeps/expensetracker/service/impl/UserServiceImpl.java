@@ -38,18 +38,34 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public RegisterResponse register(RegisterRequest request) {
-        if (userRepo.existsByEmail(request.getEmail())) {
-            throw new RuntimeException("Email already exists: " + request.getEmail());
+        Users existingUser = userRepo.findByEmail(request.getEmail());
+        if (existingUser != null) {
+            if (existingUser.isVerified()) {
+                throw new RuntimeException("Email already exists and is verified: " + request.getEmail());
+            } else {
+                // User exists but is not verified - resend OTP
+                String newOtp = generateOtp();
+                existingUser.setOtp(newOtp);
+                userRepo.save(existingUser);
+                sendVerificationMail(existingUser.getEmail(), existingUser.getOtp());
+                return RegisterResponse.builder()
+                        .email(existingUser.getEmail())
+                        .registerMessage("Account found but not verified. A new OTP has been sent.")
+                        .requiresVerification(true)
+                        .build();
+            }
         }
+
         Users user = modelMapper.map(request, Users.class);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         String otp = generateOtp();
         user.setOtp(otp);
         user = userRepo.save(user);
-        sendVerificationMail(user.getEmail(), user.getOtp());;
+        sendVerificationMail(user.getEmail(), user.getOtp());
         return RegisterResponse.builder()
                 .email(user.getEmail())
                 .registerMessage("Successfully registered the account. Please verify with OTP.")
+                .requiresVerification(true)
                 .build();
     }
 

@@ -16,17 +16,21 @@ public class EmailService {
 
     @Async
     public void sendMail(String to, String sub, String body) {
+        System.out.println("DEBUG: Attempting to send email to " + to + " with subject: " + sub);
         try {
             MimeMessage message = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
             helper.setTo(to);
             helper.setSubject(sub);
-            helper.setText(body,true);
+            helper.setText(body, true);
+            
             javaMailSender.send(message);
-        }catch (Exception e){
-            System.err.println("FAILED TO SEND EMAIL to " + to + ": " + e.getMessage());
+            System.out.println("DEBUG: Email successfully sent to " + to);
+        } catch (Exception e) {
+            System.err.println("CRITICAL ERROR: FAILED TO SEND EMAIL to " + to);
+            System.err.println("Error Type: " + e.getClass().getName());
+            System.err.println("Error Message: " + e.getMessage());
             e.printStackTrace();
-            // We log the error but don't throw to prevent blocking the registration flow in dev
         }
     }
 }
