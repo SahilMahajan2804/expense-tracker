@@ -13,16 +13,26 @@ services:
     dockerfilePath: backend/ExpenseTracker/Dockerfile
     plan: free
     envVars:
-      # Render provides DATABASE_URL automatically, but we set it explicitly to be certain
-      - key: DATABASE_URL
+      - key: DB_HOST
         fromDatabase:
           name: expense-db
-          property: connectionString
-      # We blank out these old variables to prevent them from interfering with the new logic
-      - key: SPRING_DATASOURCE_URL
-        value: ""
-      - key: BULLET_DB_HOST
-        value: ""
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: expense-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: expense-db
+          property: database
+      - key: DB_USER
+        fromDatabase:
+          name: expense-db
+          property: user
+      - key: DB_PASS
+        fromDatabase:
+          name: expense-db
+          property: password
       - key: ALLOWED_ORIGINS
         value: "*"
       - key: SPRING_MAIL_HOST
