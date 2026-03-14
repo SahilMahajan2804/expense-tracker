@@ -1,0 +1,142 @@
+<div class="dashboard-layout">
+  <app-navbar></app-navbar>
+  <app-sidebar></app-sidebar>
+
+  <main class="main-content">
+    <div class="page-header">
+      <button class="back-link" (click)="goBack()">
+        <i class="fas fa-arrow-left"></i> Back to Expenses
+      </button>
+      <h1>Expense Details</h1>
+    </div>
+
+    <app-loading-spinner
+      *ngIf="isLoading"
+      message="Loading expense details..."
+    ></app-loading-spinner>
+
+    <div class="detail-content" *ngIf="!isLoading && expense">
+      <!-- Main Info Card -->
+      <div class="detail-card main-card">
+        <div class="card-header">
+          <h2>
+            <i class="fas fa-receipt"></i>
+            {{ expense.categoryName }}
+          </h2>
+          <span class="status-badge" [class]="getStatusClass(expense.status)">
+            {{ expense.status }}
+          </span>
+        </div>
+
+        <div class="info-grid">
+          <div class="info-item">
+            <label>Amount</label>
+            <span class="amount">₹{{ expense.amount | number : '1.2-2' }}</span>
+          </div>
+
+          <div class="info-item">
+            <label>Expense Date</label>
+            <span>{{ expense.expenseDate | date : 'MMMM dd, yyyy' }}</span>
+          </div>
+
+          <div class="info-item">
+            <label>Submitted On</label>
+            <span>{{ expense.submittedAt | date : 'MMMM dd, yyyy, hh:mm a' }}</span>
+          </div>
+
+          <div class="info-item" *ngIf="expense.updatedAt">
+            <label>Last Updated</label>
+            <span>{{ expense.updatedAt | date : 'MMMM dd, yyyy, hh:mm a' }}</span>
+          </div>
+        </div>
+
+        <div class="description-section">
+          <label>Description</label>
+          <p>{{ expense.description }}</p>
+        </div>
+
+        <div class="action-buttons" *ngIf="canEdit()">
+          <a [routerLink]="['/employee/expenses/edit', expense.expenseId]" class="btn btn-primary">
+            <i class="fas fa-edit"></i> Edit Expense
+          </a>
+        </div>
+      </div>
+
+      <!-- Employee Info Card (for Admin) -->
+      <div class="detail-card" *ngIf="isAdmin">
+        <div class="card-header">
+          <h3><i class="fas fa-user"></i> Employee Information</h3>
+        </div>
+        <div class="info-grid">
+          <div class="info-item">
+            <label>Name</label>
+            <span>{{ expense.employeeName }}</span>
+          </div>
+          <div class="info-item">
+            <label>Email</label>
+            <span>{{ expense.employeeEmail }}</span>
+          </div>
+          <div class="info-item" *ngIf="expense.department">
+            <label>Department</label>
+            <span>{{ expense.department }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Attachments Card -->
+      <div class="detail-card" *ngIf="expense.attachments && expense.attachments.length > 0">
+        <div class="card-header">
+          <h3><i class="fas fa-paperclip"></i> Attachments</h3>
+        </div>
+        <div class="attachments-list">
+          <div class="attachment-item" *ngFor="let attachment of expense.attachments">
+            <div class="attachment-info">
+              <i class="fas fa-file"></i>
+              <span>{{ attachment.fileName }}</span>
+            </div>
+            <button
+              class="btn-download"
+              (click)="downloadAttachment(attachment.attachmentId, attachment.fileName)"
+            >
+              <i class="fas fa-download"></i> Download
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Approval History Card -->
+      <div class="detail-card" *ngIf="expense.approvals && expense.approvals.length > 0">
+        <div class="card-header">
+          <h3><i class="fas fa-history"></i> Approval History</h3>
+        </div>
+        <div class="approval-timeline">
+          <div class="timeline-item" *ngFor="let approval of expense.approvals">
+            <div
+              class="timeline-icon"
+              [class]="approval.decision === 'APPROVED' ? 'approved' : 'rejected'"
+            >
+              <i [class]="approval.decision === 'APPROVED' ? 'fas fa-check' : 'fas fa-times'"></i>
+            </div>
+            <div class="timeline-content">
+              <div class="timeline-header">
+                <span
+                  class="decision"
+                  [class]="approval.decision === 'APPROVED' ? 'text-success' : 'text-danger'"
+                >
+                  {{ approval.decision }}
+                </span>
+                <span class="date">{{
+                  approval.decisionDate | date : 'MMM dd, yyyy, hh:mm a'
+                }}</span>
+              </div>
+              <p class="admin-name">By: {{ approval.adminName }}</p>
+              <p class="remarks" *ngIf="approval.remarks">
+                <strong>Remarks:</strong> {{ approval.remarks }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

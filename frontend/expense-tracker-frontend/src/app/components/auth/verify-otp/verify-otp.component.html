@@ -1,0 +1,47 @@
+<div class="otp-container">
+  <div class="otp-card">
+    <div class="otp-header">
+      <div class="otp-icon">
+        <i class="fas fa-envelope-open-text"></i>
+      </div>
+      <h2>Verify Your Email</h2>
+      <p>We've sent a verification code to</p>
+      <p class="email-text">{{ email() }}</p>
+    </div>
+
+    <form [formGroup]="otpForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="otp">Enter OTP</label>
+        <input
+          type="text"
+          id="otp"
+          class="form-control otp-input"
+          formControlName="otp"
+          placeholder="Enter 6-digit OTP"
+          maxlength="6"
+          [class.is-invalid]="f['otp'].touched && f['otp'].invalid"
+        />
+        @if (f['otp'].touched && f['otp'].errors) {
+        <div class="invalid-feedback">OTP must be 4-6 digits</div>
+        }
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block" [disabled]="isLoading()">
+        @if (!isLoading()) {
+        <i class="fas fa-check-circle"></i> Verify OTP } @else {
+        <i class="fas fa-spinner fa-spin"></i> Verifying... }
+      </button>
+    </form>
+
+    <div class="otp-footer">
+      <p>Didn't receive the code?</p>
+      <button class="btn-link" (click)="resendOtp()" [disabled]="isResending()">
+        @if (!isResending()) { Resend OTP } @else { Sending... }
+      </button>
+    </div>
+
+    <div class="back-to-login">
+      <a routerLink="/login"><i class="fas fa-arrow-left"></i> Back to Login</a>
+    </div>
+  </div>
+</div>

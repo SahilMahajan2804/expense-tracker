@@ -1,0 +1,459 @@
+<div class="dashboard-layout">
+  <app-navbar />
+  <app-sidebar />
+
+  <main class="main-content">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="header-left">
+        <h1><i class="fas fa-file-invoice-dollar"></i> All Expenses</h1>
+        <p>Manage and review all expense requests</p>
+      </div>
+      <div class="header-right">
+        <button class="btn btn-outline" (click)="exportToPDF()">
+          <i class="fas fa-file-pdf"></i> Export PDF
+        </button>
+        <button class="btn btn-outline" (click)="exportToCSV()">
+          <i class="fas fa-file-csv"></i> Export CSV
+        </button>
+        <button class="btn btn-primary" (click)="loadExpenses()">
+          <i class="fas fa-sync-alt"></i> Refresh
+        </button>
+      </div>
+    </div>
+
+    <!-- Bulk Actions Bar (Sticky) -->
+    @if (selectedExpenseIds().size > 0) {
+    <div class="bulk-actions-bar">
+      <div class="selection-info">
+        <span class="count">{{ selectedExpenseIds().size }}</span> items selected
+      </div>
+      <div class="bulk-btns">
+        <button class="bulk-btn approve" (click)="openBulkApproveModal()">
+          <i class="fas fa-check"></i> Approve Selected
+        </button>
+        <button class="bulk-btn reject" (click)="openBulkRejectModal()">
+          <i class="fas fa-times"></i> Reject Selected
+        </button>
+        <button class="bulk-btn clear" (click)="clearSelection()">
+          Clear Selection
+        </button>
+      </div>
+    </div>
+    }
+
+    <!-- Statistics Cards -->
+    <div class="stats-row">
+      <!-- ✅ Use selectedStatus() with parentheses -->
+      <div
+        class="stat-card"
+        [class.active]="selectedStatus() === 'ALL'"
+        (click)="onStatusChange('ALL')"
+      >
+        <div class="stat-icon total">
+          <i class="fas fa-receipt"></i>
+        </div>
+        <div class="stat-content">
+          <!-- ✅ Use stats() with parentheses, then access .total -->
+          <span class="stat-value">{{ stats().total }}</span>
+          <span class="stat-label">Total</span>
+        </div>
+      </div>
+
+      <div
+        class="stat-card"
+        [class.active]="selectedStatus() === 'PENDING'"
+        (click)="onStatusChange('PENDING')"
+      >
+        <div class="stat-icon pending">
+          <i class="fas fa-clock"></i>
+        </div>
+        <div class="stat-content">
+          <span class="stat-value">{{ stats().pending }}</span>
+          <span class="stat-label">Pending</span>
+        </div>
+      </div>
+
+      <div
+        class="stat-card"
+        [class.active]="selectedStatus() === 'APPROVED'"
+        (click)="onStatusChange('APPROVED')"
+      >
+        <div class="stat-icon approved">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="stat-content">
+          <span class="stat-value">{{ stats().approved }}</span>
+          <span class="stat-label">Approved</span>
+        </div>
+      </div>
+
+      <div
+        class="stat-card"
+        [class.active]="selectedStatus() === 'REJECTED'"
+        (click)="onStatusChange('REJECTED')"
+      >
+        <div class="stat-icon rejected">
+          <i class="fas fa-times-circle"></i>
+        </div>
+        <div class="stat-content">
+          <span class="stat-value">{{ stats().rejected }}</span>
+          <span class="stat-label">Rejected</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filters Section -->
+    <div class="filters-section">
+      <div class="search-box">
+        <i class="fas fa-search"></i>
+        <!-- ✅ Use searchTerm() for value, onSearchInput for event -->
+        <input
+          type="text"
+          placeholder="Search by employee, description, category..."
+          [value]="searchTerm()"
+          (input)="onSearchInput($event)"
+        />
+        <!-- ✅ Use searchTerm() with parentheses in @if -->
+        @if (searchTerm()) {
+        <button class="clear-btn" (click)="clearSearch()">
+          <i class="fas fa-times"></i>
+        </button>
+        }
+      </div>
+
+      <div class="filter-tabs">
+        <!-- ✅ Use selectedStatus() with parentheses -->
+        <button
+          class="filter-tab"
+          [class.active]="selectedStatus() === 'ALL'"
+          (click)="onStatusChange('ALL')"
+        >
+          All
+        </button>
+        <button
+          class="filter-tab"
+          [class.active]="selectedStatus() === 'PENDING'"
+          (click)="onStatusChange('PENDING')"
+        >
+          Pending
+        </button>
+        <button
+          class="filter-tab"
+          [class.active]="selectedStatus() === 'APPROVED'"
+          (click)="onStatusChange('APPROVED')"
+        >
+          Approved
+        </button>
+        <button
+          class="filter-tab"
+          [class.active]="selectedStatus() === 'REJECTED'"
+          (click)="onStatusChange('REJECTED')"
+        >
+          Rejected
+        </button>
+      </div>
+    </div>
+
+    <!-- Loading State -->
+    <!-- ✅ Use isLoading() with parentheses -->
+    @if (isLoading()) {
+    <app-loading-spinner message="Loading expenses..." />
+    }
+
+    <!-- Expenses Table -->
+    @if (!isLoading()) {
+    <div class="table-container">
+      <!-- No Data State -->
+      <!-- ✅ Use filteredExpenses() with parentheses -->
+      @if (filteredExpenses().length === 0) {
+      <div class="no-data">
+        <i class="fas fa-inbox"></i>
+        <h3>No Expenses Found</h3>
+        <!-- ✅ Use searchTerm() and selectedStatus() with parentheses -->
+        @if (searchTerm() || selectedStatus() !== 'ALL') {
+        <p>Try adjusting your filters or search term</p>
+        } @else {
+        <p>No expense requests have been submitted yet</p>
+        }
+      </div>
+      }
+
+      <!-- Table -->
+      @if (filteredExpenses().length > 0) {
+      <table class="expenses-table">
+        <thead>
+          <tr>
+            <th class="selection-col">
+              <input type="checkbox" [checked]="isAllSelected()" (change)="toggleAllSelection()" />
+            </th>
+            <th>ID</th>
+            <th>Employee</th>
+            <th>Category</th>
+            <th>Amount</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Description</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- ✅ Use paginatedExpenses() with parentheses -->
+          @for (expense of paginatedExpenses(); track expense.expenseId) {
+          <tr [class.selected]="selectedExpenseIds().has(expense.expenseId)">
+            <td class="selection-col">
+              @if (expense.status === 'PENDING') {
+                <input type="checkbox" 
+                       [checked]="selectedExpenseIds().has(expense.expenseId)" 
+                       (change)="toggleSelection(expense.expenseId)" />
+              } @else {
+                <i class="fas fa-check-double text-muted" style="opacity: 0.3"></i>
+              }
+            </td>
+            <td class="id-cell">#{{ expense.expenseId }}</td>
+            <td class="employee-cell">
+              <div class="employee-info">
+                <div class="avatar">
+                  {{ expense.employeeName.charAt(0) }}
+                </div>
+                <div class="details">
+                  <span class="name">{{ expense.employeeName }}</span>
+                  <span class="email">{{ expense.employeeEmail }}</span>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="category-badge">
+                <i class="fas fa-tag"></i> {{ expense.categoryName || 'N/A' }}
+              </span>
+            </td>
+            <td class="amount-cell">
+              <strong>{{ formatAmount(expense.amount) }}</strong>
+            </td>
+            <td>{{ formatDate(expense.expenseDate) }}</td>
+            <td>
+              <span class="status-badge" [ngClass]="getStatusClass(expense.status)">
+                @switch (expense.status) { @case ('PENDING') {
+                <i class="fas fa-clock"></i>
+                } @case ('APPROVED') {
+                <i class="fas fa-check"></i>
+                } @case ('REJECTED') {
+                <i class="fas fa-times"></i>
+                } }
+                {{ expense.status }}
+              </span>
+            </td>
+            <td class="description-cell">
+              <span class="description-text" [title]="expense.description">
+                {{
+                  expense.description.length > 50
+                    ? expense.description.slice(0, 50) + '...'
+                    : expense.description
+                }}
+              </span>
+            </td>
+            <td class="actions-cell">
+              <div class="action-buttons">
+                <button class="action-btn view" (click)="viewExpense(expense)" title="View Details">
+                  <i class="fas fa-eye"></i>
+                </button>
+                @if (expense.attachments && expense.attachments.length > 0) {
+                  <button class="action-btn file" (click)="viewBill(expense)" title="View Attachment">
+                    <i class="fas fa-paperclip"></i>
+                  </button>
+                }
+                @if (expense.status === 'PENDING') {
+                <button
+                  class="action-btn approve"
+                  (click)="openApproveModal(expense)"
+                  title="Approve"
+                >
+                  <i class="fas fa-check"></i>
+                </button>
+                <button class="action-btn reject" (click)="openRejectModal(expense)" title="Reject">
+                  <i class="fas fa-times"></i>
+                </button>
+                } @if (expense.status !== 'PENDING') {
+                <span class="processed-info" title="Already processed">
+                  <i class="fas fa-info-circle"></i>
+                </span>
+                }
+              </div>
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+
+      <!-- Pagination -->
+      <!-- ✅ Use totalPages() with parentheses -->
+      @if (totalPages() > 1) {
+      <div class="pagination">
+        <div class="pagination-info">
+          <!-- ✅ Use currentPage() and filteredExpenses() with parentheses -->
+          Showing {{ (currentPage() - 1) * itemsPerPage + 1 }} -
+          {{
+            currentPage() * itemsPerPage > filteredExpenses().length
+              ? filteredExpenses().length
+              : currentPage() * itemsPerPage
+          }}
+          of {{ filteredExpenses().length }} entries
+        </div>
+        <div class="pagination-controls">
+          <!-- ✅ Use currentPage() with parentheses -->
+          <button class="page-btn" (click)="goToPage(1)" [disabled]="currentPage() === 1">
+            <i class="fas fa-angle-double-left"></i>
+          </button>
+          <button
+            class="page-btn"
+            (click)="goToPage(currentPage() - 1)"
+            [disabled]="currentPage() === 1"
+          >
+            <i class="fas fa-angle-left"></i>
+          </button>
+
+          @for (page of getPageNumbers(); track page) {
+          <button
+            class="page-btn page-number"
+            [class.active]="page === currentPage()"
+            (click)="goToPage(page)"
+          >
+            {{ page }}
+          </button>
+          }
+
+          <!-- ✅ Use currentPage() and totalPages() with parentheses -->
+          <button
+            class="page-btn"
+            (click)="goToPage(currentPage() + 1)"
+            [disabled]="currentPage() === totalPages()"
+          >
+            <i class="fas fa-angle-right"></i>
+          </button>
+          <button
+            class="page-btn"
+            (click)="goToPage(totalPages())"
+            [disabled]="currentPage() === totalPages()"
+          >
+            <i class="fas fa-angle-double-right"></i>
+          </button>
+        </div>
+      </div>
+      } }
+    </div>
+    }
+  </main>
+</div>
+
+<!-- Approval/Rejection Modal -->
+<!-- ✅ Use showModal() with parentheses -->
+@if (showModal()) {
+<div class="modal-overlay" (click)="closeModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <!-- ✅ Use modalAction() with parentheses -->
+    <div
+      class="modal-header"
+      [class.approve-header]="modalAction() === 'approve' || modalAction() === 'bulk_approve'"
+      [class.reject-header]="modalAction() === 'reject' || modalAction() === 'bulk_reject'"
+    >
+      <h2>
+        @if (modalAction() === 'approve') {
+          <i class="fas fa-check-circle"></i> Approve Expense 
+        } @else if (modalAction() === 'bulk_approve') {
+          <i class="fas fa-check-double"></i> Approve {{ selectedExpenseIds().size }} Expenses
+        } @else if (modalAction() === 'bulk_reject') {
+          <i class="fas fa-times-circle"></i> Reject {{ selectedExpenseIds().size }} Expenses
+        } @else {
+          <i class="fas fa-times-circle"></i> Reject Expense 
+        }
+      </h2>
+      <button class="close-btn" (click)="closeModal()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <!-- ✅ Use selectedExpense() with parentheses -->
+    @if (selectedExpense() || modalAction().startsWith('bulk_')) {
+    <div class="modal-body">
+      <!-- Expense Summary (individual) -->
+      @if (selectedExpense()) {
+        <div class="expense-summary">
+          <div class="summary-row">
+            <span class="label">Employee:</span>
+            <span class="value">{{ selectedExpense()!.employeeName }}</span>
+          </div>
+          <div class="summary-row">
+            <span class="label">Amount:</span>
+            <span class="value amount">{{ formatAmount(selectedExpense()!.amount) }}</span>
+          </div>
+          <div class="summary-row">
+            <span class="label">Category:</span>
+            <span class="value">{{ selectedExpense()!.categoryName }}</span>
+          </div>
+          <div class="summary-row full-width">
+            <span class="label">Description:</span>
+            <span class="value description">{{ selectedExpense()!.description }}</span>
+          </div>
+        </div>
+      } @else {
+        <div class="bulk-summary">
+          <p>You are about to {{ modalAction() === 'bulk_approve' ? 'approve' : 'reject' }} <strong>{{ selectedExpenseIds().size }}</strong> expenses.</p>
+        </div>
+      }
+
+      <!-- Remarks Input -->
+      <div class="remarks-section">
+        <label>
+          <i class="fas fa-comment-alt"></i>
+          @if (modalAction().includes('approve')) { Approval Remarks (Optional) } @else { Rejection Reason
+          <span class="required">*</span>
+          }
+        </label>
+        <textarea
+          [value]="remarks()"
+          (input)="updateRemarks($event)"
+          [placeholder]="
+            modalAction().includes('approve')
+              ? 'Add any remarks for approval...'
+              : 'Please provide a reason for rejection...'
+          "
+          rows="4"
+        ></textarea>
+      </div>
+
+      <!-- Warning for rejection -->
+      @if (modalAction().includes('reject')) {
+      <div class="warning-box">
+        <i class="fas fa-exclamation-triangle"></i>
+        <span>This action cannot be undone. Employees will be notified.</span>
+      </div>
+      }
+    </div>
+    }
+
+    <div class="modal-footer">
+      <!-- ✅ Use isProcessing() with parentheses -->
+      <button class="btn btn-secondary" (click)="closeModal()" [disabled]="isProcessing()">
+        Cancel
+      </button>
+      <button
+        class="btn"
+        [class.btn-success]="modalAction().includes('approve')"
+        [class.btn-danger]="modalAction().includes('reject')"
+        (click)="confirmAction()"
+        [disabled]="isProcessing() || (modalAction().includes('reject') && !remarks().trim())"
+      >
+        @if (!isProcessing()) { 
+          @if (modalAction().includes('approve')) {
+            <i class="fas fa-check"></i> Approve 
+          } @else { 
+            <i class="fas fa-times"></i> Reject 
+          } 
+        } @else { 
+          <i class="fas fa-spinner fa-spin"></i> Processing... 
+        }
+      </button>
+    </div>
+  </div>
+</div>
+}

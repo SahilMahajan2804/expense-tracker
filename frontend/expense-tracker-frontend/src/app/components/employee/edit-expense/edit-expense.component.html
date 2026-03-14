@@ -1,0 +1,146 @@
+<div class="dashboard-layout">
+  <app-navbar></app-navbar>
+  <app-sidebar></app-sidebar>
+
+  <main class="main-content">
+    <div class="page-header">
+      <a routerLink="/employee/expenses" class="back-link">
+        <i class="fas fa-arrow-left"></i> Back to Expenses
+      </a>
+      <h1>Edit Expense</h1>
+      <p>Update your expense request</p>
+    </div>
+
+    <app-loading-spinner *ngIf="isLoading" message="Loading expense..."></app-loading-spinner>
+
+    <div class="form-card" *ngIf="!isLoading">
+      <form [formGroup]="expenseForm" (ngSubmit)="onSubmit()">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="categoryId"> <i class="fas fa-tag"></i> Category * </label>
+            <select
+              id="categoryId"
+              class="form-control"
+              formControlName="categoryId"
+              [class.is-invalid]="f['categoryId'].touched && f['categoryId'].invalid"
+            >
+              <option value="">Select a category</option>
+              <option *ngFor="let category of categories" [value]="category.categoryId">
+                {{ category.categoryName }}
+              </option>
+            </select>
+            <div class="invalid-feedback" *ngIf="f['categoryId'].touched && f['categoryId'].errors">
+              Category is required
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="amount"> <i class="fas fa-rupee-sign"></i> Amount * </label>
+            <input
+              type="number"
+              id="amount"
+              class="form-control"
+              formControlName="amount"
+              placeholder="Enter amount"
+              step="0.01"
+              [class.is-invalid]="f['amount'].touched && f['amount'].invalid"
+            />
+            <div class="invalid-feedback" *ngIf="f['amount'].touched && f['amount'].errors">
+              <span *ngIf="f['amount'].errors['required']">Amount is required</span>
+              <span *ngIf="f['amount'].errors['min']">Amount must be greater than 0</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="expenseDate"> <i class="fas fa-calendar"></i> Expense Date * </label>
+          <input
+            type="date"
+            id="expenseDate"
+            class="form-control"
+            formControlName="expenseDate"
+            [class.is-invalid]="f['expenseDate'].touched && f['expenseDate'].invalid"
+          />
+          <div class="invalid-feedback" *ngIf="f['expenseDate'].touched && f['expenseDate'].errors">
+            Date is required
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="description"> <i class="fas fa-align-left"></i> Description * </label>
+          <textarea
+            id="description"
+            class="form-control"
+            formControlName="description"
+            rows="4"
+            placeholder="Provide details about this expense..."
+            [class.is-invalid]="f['description'].touched && f['description'].invalid"
+          ></textarea>
+          <div class="invalid-feedback" *ngIf="f['description'].touched && f['description'].errors">
+            <span *ngIf="f['description'].errors['required']">Description is required</span>
+            <span *ngIf="f['description'].errors['minlength']">Minimum 10 characters required</span>
+          </div>
+        </div>
+
+        <!-- Existing Attachments -->
+        <div class="form-group" *ngIf="existingAttachments.length > 0">
+          <label> <i class="fas fa-paperclip"></i> Existing Attachments </label>
+          <div class="existing-files">
+            <div class="file-item" *ngFor="let attachment of existingAttachments">
+              <i class="fas fa-file"></i>
+              <span>{{ attachment.fileName }}</span>
+              <button
+                type="button"
+                class="remove-file"
+                (click)="removeExistingAttachment(attachment)"
+              >
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- New Attachments -->
+        <div class="form-group">
+          <label> <i class="fas fa-plus-circle"></i> Add More Attachments </label>
+          <div class="file-upload-area">
+            <input
+              type="file"
+              id="files"
+              multiple
+              (change)="onFileSelect($event)"
+              accept=".pdf,.jpg,.jpeg,.png"
+              class="file-input"
+            />
+            <label for="files" class="file-label">
+              <i class="fas fa-cloud-upload-alt"></i>
+              <span>Click to upload or drag and drop</span>
+              <span class="file-hint">PDF, JPG, PNG (Max 10MB each)</span>
+            </label>
+          </div>
+
+          <div class="selected-files" *ngIf="newFiles.length > 0">
+            <div class="file-item new" *ngFor="let file of newFiles; let i = index">
+              <i class="fas fa-file"></i>
+              <span>{{ file.name }}</span>
+              <span class="new-badge">New</span>
+              <button type="button" class="remove-file" (click)="removeNewFile(i)">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" routerLink="/employee/expenses">
+            Cancel
+          </button>
+          <button type="submit" class="btn btn-primary" [disabled]="isSubmitting">
+            <span *ngIf="!isSubmitting"> <i class="fas fa-save"></i> Update Expense </span>
+            <span *ngIf="isSubmitting"> <i class="fas fa-spinner fa-spin"></i> Updating... </span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </main>
+</div>

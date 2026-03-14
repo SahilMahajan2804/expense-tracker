@@ -1,0 +1,91 @@
+<div class="dashboard-layout">
+  <app-navbar></app-navbar>
+  <app-sidebar></app-sidebar>
+
+  <main class="main-content">
+    <div class="page-header">
+      <h1>Welcome, {{ currentUser?.firstname }}! 👋</h1>
+      <p>Here's an overview of your expenses</p>
+    </div>
+
+    <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+
+    <div class="dashboard-content" *ngIf="!isLoading && dashboard">
+      <!-- Stats Cards -->
+      <div class="stats-grid">
+        <div class="stat-card total">
+          <div class="stat-icon">
+            <i class="fas fa-receipt"></i>
+          </div>
+          <div class="stat-info">
+            <h3>{{ dashboard.totalExpenses }}</h3>
+            <p>Total Expenses</p>
+          </div>
+        </div>
+
+        <div class="stat-card pending">
+          <div class="stat-icon">
+            <i class="fas fa-clock"></i>
+          </div>
+          <div class="stat-info">
+            <h3>{{ dashboard.pendingExpenses }}</h3>
+            <p>Pending Approval</p>
+          </div>
+        </div>
+
+        <div class="stat-card approved">
+          <div class="stat-icon">
+            <i class="fas fa-check-circle"></i>
+          </div>
+          <div class="stat-info">
+            <h3>{{ dashboard.approvedExpenses }}</h3>
+            <p>Approved</p>
+          </div>
+        </div>
+
+        <div class="stat-card rejected">
+          <div class="stat-icon">
+            <i class="fas fa-times-circle"></i>
+          </div>
+          <div class="stat-info">
+            <h3>{{ dashboard.rejectedExpenses }}</h3>
+            <p>Rejected</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Amount Cards -->
+      <div class="amount-grid">
+        <div class="amount-card">
+          <h4>Total Amount Claimed</h4>
+          <p class="amount">₹{{ dashboard.totalAmount | number : '1.2-2' }}</p>
+        </div>
+
+        <div class="amount-card">
+          <h4>Approved Amount</h4>
+          <p class="amount success">₹{{ dashboard.approvedAmount | number : '1.2-2' }}</p>
+        </div>
+
+        <div class="amount-card">
+          <h4>Pending Amount</h4>
+          <p class="amount warning">₹{{ dashboard.pendingAmount | number : '1.2-2' }}</p>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="quick-actions">
+        <h2>Quick Actions</h2>
+        <div class="action-buttons">
+          <a routerLink="/employee/expenses/create" class="action-btn primary">
+            <i class="fas fa-plus"></i>
+            New Expense
+          </a>
+          <a routerLink="/employee/expenses" class="action-btn secondary">
+            <i class="fas fa-list"></i>
+            View All Expenses
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

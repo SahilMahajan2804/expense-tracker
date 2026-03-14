@@ -1,0 +1,46 @@
+/* ============================================
+   EMPLOYEE DASHBOARD — Premium Stat Cards
+   ============================================ */
+
+.dashboard-layout { min-height: 100vh; background: var(--bg-body); }
+.main-content { margin-left: 250px; margin-top: 64px; padding: 28px; min-height: calc(100vh - 64px); }
+
+.page-header { margin-bottom: 28px; animation: fadeInUp 0.4s ease; }
+.page-header h1 { color: var(--text-primary); font-size: 24px; font-family: 'Inter Tight', 'Inter', sans-serif; font-weight: 700; margin-bottom: 4px; letter-spacing: -0.02em; }
+.page-header p { color: var(--text-secondary); font-size: 14px; }
+
+.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-bottom: 24px; }
+
+.stat-card { background: var(--bg-card); border-radius: var(--radius-lg); padding: 22px; display: flex; align-items: center; gap: 18px; box-shadow: var(--shadow-sm); border: 1px solid var(--border-light); transition: all var(--transition-base); animation: fadeInUp 0.5s ease both; }
+.stat-card:nth-child(1){animation-delay:0s}.stat-card:nth-child(2){animation-delay:0.06s}.stat-card:nth-child(3){animation-delay:0.12s}.stat-card:nth-child(4){animation-delay:0.18s}
+.stat-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: var(--border-card); }
+
+.stat-icon { width: 56px; height: 56px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+.stat-card.total .stat-icon { background: linear-gradient(135deg, rgba(124, 92, 252, 0.1), rgba(167, 139, 250, 0.15)); color: var(--primary); }
+.stat-card.pending .stat-icon { background: var(--warning-bg); color: var(--warning); }
+.stat-card.approved .stat-icon { background: var(--success-bg); color: var(--success); }
+.stat-card.rejected .stat-icon { background: var(--danger-bg); color: var(--danger); }
+
+.stat-info h3 { font-size: 32px; color: var(--text-primary); margin: 0; font-weight: 800; font-family: 'Inter Tight', 'Inter', sans-serif; letter-spacing: -0.03em; line-height: 1; }
+.stat-info p { color: var(--text-secondary); font-size: 13px; margin: 6px 0 0; font-weight: 500; }
+
+.amount-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-bottom: 24px; }
+.amount-card { background: var(--bg-card); border-radius: var(--radius-lg); padding: 22px; text-align: center; box-shadow: var(--shadow-sm); border: 1px solid var(--border-light); transition: all var(--transition-base); animation: fadeInUp 0.5s ease 0.25s both; }
+.amount-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.amount-card h4 { color: var(--text-secondary); font-size: 11px; margin-bottom: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; }
+.amount { font-size: 24px; font-weight: 800; color: var(--text-primary); margin: 0; font-family: 'Inter Tight', 'Inter', sans-serif; letter-spacing: -0.02em; }
+.amount.success { color: var(--success); }
+.amount.warning { color: #d97706; }
+
+.quick-actions { background: var(--bg-card); border-radius: var(--radius-lg); padding: 24px; box-shadow: var(--shadow-sm); border: 1px solid var(--border-light); animation: fadeInUp 0.5s ease 0.3s both; }
+.quick-actions h2 { color: var(--text-primary); font-size: 16px; font-weight: 700; font-family: 'Inter Tight', 'Inter', sans-serif; margin-bottom: 18px; }
+
+.action-buttons { display: flex; gap: 12px; }
+.action-btn { display: inline-flex; align-items: center; gap: 10px; padding: 12px 22px; border-radius: var(--radius-sm); text-decoration: none; font-weight: 600; font-size: 13px; transition: all var(--transition-fast); }
+.action-btn.primary { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; box-shadow: 0 2px 8px var(--primary-glow); }
+.action-btn.primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px var(--primary-glow); }
+.action-btn.secondary { background: #fafbff; color: var(--text-primary); border: 1.5px solid var(--border-light); }
+.action-btn.secondary:hover { border-color: var(--primary); color: var(--primary); }
+
+@media (max-width: 1200px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 768px) { .main-content { margin-left: 0; padding: 20px; } .stats-grid { grid-template-columns: 1fr; } .amount-grid { grid-template-columns: 1fr; } .action-buttons { flex-direction: column; } }

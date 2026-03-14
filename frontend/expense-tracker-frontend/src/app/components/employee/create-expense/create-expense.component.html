@@ -1,0 +1,124 @@
+<div class="dashboard-layout">
+  <app-navbar></app-navbar>
+  <app-sidebar></app-sidebar>
+
+  <main class="main-content">
+    <div class="page-header">
+      <a routerLink="/employee/expenses" class="back-link">
+        <i class="fas fa-arrow-left"></i> Back to Expenses
+      </a>
+      <h1>Create New Expense</h1>
+      <p>Submit a new expense request for approval</p>
+    </div>
+
+    <div class="form-card">
+      <form [formGroup]="expenseForm" (ngSubmit)="onSubmit()">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="categoryId"> <i class="fas fa-tag"></i> Category * </label>
+            <select
+              id="categoryId"
+              class="form-control"
+              formControlName="categoryId"
+              [class.is-invalid]="f['categoryId'].touched && f['categoryId'].invalid"
+            >
+              <option value="">Select a category</option>
+              <option *ngFor="let category of categories" [value]="category.categoryId">
+                {{ category.categoryName }}
+              </option>
+            </select>
+            <div class="invalid-feedback" *ngIf="f['categoryId'].touched && f['categoryId'].errors">
+              Category is required
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="amount"> <i class="fas fa-rupee-sign"></i> Amount * </label>
+            <input
+              type="number"
+              id="amount"
+              class="form-control"
+              formControlName="amount"
+              placeholder="Enter amount"
+              step="0.01"
+              [class.is-invalid]="f['amount'].touched && f['amount'].invalid"
+            />
+            <div class="invalid-feedback" *ngIf="f['amount'].touched && f['amount'].errors">
+              <span *ngIf="f['amount'].errors['required']">Amount is required</span>
+              <span *ngIf="f['amount'].errors['min']">Amount must be greater than 0</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="expenseDate"> <i class="fas fa-calendar"></i> Expense Date * </label>
+          <input
+            type="date"
+            id="expenseDate"
+            class="form-control"
+            formControlName="expenseDate"
+            [class.is-invalid]="f['expenseDate'].touched && f['expenseDate'].invalid"
+          />
+          <div class="invalid-feedback" *ngIf="f['expenseDate'].touched && f['expenseDate'].errors">
+            Date is required
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="description"> <i class="fas fa-align-left"></i> Description * </label>
+          <textarea
+            id="description"
+            class="form-control"
+            formControlName="description"
+            rows="4"
+            placeholder="Provide details about this expense..."
+            [class.is-invalid]="f['description'].touched && f['description'].invalid"
+          ></textarea>
+          <div class="invalid-feedback" *ngIf="f['description'].touched && f['description'].errors">
+            <span *ngIf="f['description'].errors['required']">Description is required</span>
+            <span *ngIf="f['description'].errors['minlength']">Minimum 10 characters required</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label> <i class="fas fa-paperclip"></i> Attachments (Receipts/Bills) </label>
+          <div class="file-upload-area">
+            <input
+              type="file"
+              id="files"
+              multiple
+              (change)="onFileSelect($event)"
+              accept=".pdf,.jpg,.jpeg,.png"
+              class="file-input"
+            />
+            <label for="files" class="file-label">
+              <i class="fas fa-cloud-upload-alt"></i>
+              <span>Click to upload or drag and drop</span>
+              <span class="file-hint">PDF, JPG, PNG (Max 10MB each)</span>
+            </label>
+          </div>
+
+          <div class="selected-files" *ngIf="selectedFiles.length > 0">
+            <div class="file-item" *ngFor="let file of selectedFiles; let i = index">
+              <i class="fas fa-file"></i>
+              <span>{{ file.name }}</span>
+              <button type="button" class="remove-file" (click)="removeFile(i)">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" routerLink="/employee/expenses">
+            Cancel
+          </button>
+          <button type="submit" class="btn btn-primary" [disabled]="isLoading">
+            <span *ngIf="!isLoading"> <i class="fas fa-paper-plane"></i> Submit Expense </span>
+            <span *ngIf="isLoading"> <i class="fas fa-spinner fa-spin"></i> Submitting... </span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </main>
+</div>

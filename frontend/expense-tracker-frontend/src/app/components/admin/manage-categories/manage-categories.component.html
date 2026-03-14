@@ -1,0 +1,245 @@
+<div class="dashboard-layout">
+  <app-navbar></app-navbar>
+  <app-sidebar></app-sidebar>
+
+  <main class="main-content">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="header-left">
+        <h1><i class="fas fa-tags"></i> Manage Categories</h1>
+        <p>Create and manage expense categories</p>
+      </div>
+      <div class="header-right">
+        <button class="btn btn-primary" (click)="openAddModal()">
+          <i class="fas fa-plus"></i> Add Category
+        </button>
+      </div>
+    </div>
+
+    <!-- Statistics -->
+    <div class="stats-row">
+      <div class="stat-card" [class.active]="filterStatus === 'ALL'" (click)="filterStatus = 'ALL'">
+        <div class="stat-icon total">
+          <i class="fas fa-layer-group"></i>
+        </div>
+        <div class="stat-content">
+          <span class="stat-value">{{ categories.length }}</span>
+          <span class="stat-label">Total Categories</span>
+        </div>
+      </div>
+
+      <div
+        class="stat-card"
+        [class.active]="filterStatus === 'ACTIVE'"
+        (click)="filterStatus = 'ACTIVE'"
+      >
+        <div class="stat-icon active">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="stat-content">
+          <span class="stat-value">{{ activeCount }}</span>
+          <span class="stat-label">Active</span>
+        </div>
+      </div>
+
+      <div
+        class="stat-card"
+        [class.active]="filterStatus === 'INACTIVE'"
+        (click)="filterStatus = 'INACTIVE'"
+      >
+        <div class="stat-icon inactive">
+          <i class="fas fa-ban"></i>
+        </div>
+        <div class="stat-content">
+          <span class="stat-value">{{ inactiveCount }}</span>
+          <span class="stat-label">Inactive</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Search -->
+    <div class="search-section">
+      <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="Search categories..." [(ngModel)]="searchTerm" />
+        <button class="clear-btn" *ngIf="searchTerm" (click)="searchTerm = ''">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Loading -->
+    <app-loading-spinner *ngIf="isLoading" message="Loading categories..."></app-loading-spinner>
+
+    <!-- Categories Grid -->
+    <div class="categories-container" *ngIf="!isLoading">
+      <!-- No Data -->
+      <div class="no-data" *ngIf="filteredCategories.length === 0">
+        <i class="fas fa-folder-open"></i>
+        <h3>No Categories Found</h3>
+        <p *ngIf="searchTerm || filterStatus !== 'ALL'">Try adjusting your filters</p>
+        <p *ngIf="!searchTerm && filterStatus === 'ALL'">Click "Add Category" to create one</p>
+      </div>
+
+      <!-- Categories Grid -->
+      <div class="categories-grid" *ngIf="filteredCategories.length > 0">
+        <div class="category-card" *ngFor="let category of filteredCategories">
+          <div class="card-header">
+            <div class="category-icon">
+              <i class="fas fa-tag"></i>
+            </div>
+            <div class="status-toggle">
+              <label class="switch">
+                <input
+                  type="checkbox"
+                  [checked]="category.isActive"
+                  (change)="toggleStatus(category)"
+                />
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="card-body">
+            <h3>{{ category.categoryName }}</h3>
+            <p class="description">{{ category.description || 'No description provided' }}</p>
+            <span
+              class="status-badge"
+              [class.active]="category.isActive"
+              [class.inactive]="!category.isActive"
+            >
+              {{ category.isActive ? 'Active' : 'Inactive' }}
+            </span>
+          </div>
+
+          <div class="card-footer">
+            <button class="action-btn edit" (click)="openEditModal(category)" title="Edit">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button class="action-btn delete" (click)="openDeleteModal(category)" title="Delete">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Add/Edit Modal -->
+<div class="modal-overlay" *ngIf="showModal" (click)="closeModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>
+        <i [class]="isEditMode ? 'fas fa-edit' : 'fas fa-plus-circle'"></i>
+        {{ isEditMode ? 'Edit Category' : 'Add New Category' }}
+      </h2>
+      <button class="close-btn" (click)="closeModal()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()">
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="categoryName"> <i class="fas fa-tag"></i> Category Name * </label>
+          <input
+            type="text"
+            id="categoryName"
+            class="form-control"
+            formControlName="categoryName"
+            placeholder="Enter category name"
+            [class.is-invalid]="f['categoryName'].touched && f['categoryName'].invalid"
+          />
+          <div
+            class="invalid-feedback"
+            *ngIf="f['categoryName'].touched && f['categoryName'].errors"
+          >
+            <span *ngIf="f['categoryName'].errors['required']">Category name is required</span>
+            <span *ngIf="f['categoryName'].errors['minlength']">Minimum 2 characters required</span>
+            <span *ngIf="f['categoryName'].errors['maxlength']">Maximum 50 characters allowed</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="description"> <i class="fas fa-align-left"></i> Description </label>
+          <textarea
+            id="description"
+            class="form-control"
+            formControlName="description"
+            placeholder="Enter category description (optional)"
+            rows="3"
+            [class.is-invalid]="f['description'].touched && f['description'].invalid"
+          ></textarea>
+          <div class="invalid-feedback" *ngIf="f['description'].touched && f['description'].errors">
+            <span *ngIf="f['description'].errors['maxlength']">Maximum 200 characters allowed</span>
+          </div>
+        </div>
+
+        <div class="form-group checkbox-group">
+          <label class="checkbox-label">
+            <input type="checkbox" formControlName="isActive" />
+            <span class="checkmark"></span>
+            Active Category
+          </label>
+          <small class="hint">Inactive categories won't be available for new expenses</small>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="closeModal()"
+          [disabled]="isSubmitting"
+        >
+          Cancel
+        </button>
+        <button type="submit" class="btn btn-primary" [disabled]="isSubmitting">
+          <span *ngIf="!isSubmitting">
+            <i [class]="isEditMode ? 'fas fa-save' : 'fas fa-plus'"></i>
+            {{ isEditMode ? 'Update' : 'Create' }}
+          </span>
+          <span *ngIf="isSubmitting"> <i class="fas fa-spinner fa-spin"></i> Saving... </span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal-overlay" *ngIf="showDeleteModal" (click)="closeDeleteModal()">
+  <div class="modal-content delete-modal" (click)="$event.stopPropagation()">
+    <div class="modal-header delete-header">
+      <h2>
+        <i class="fas fa-exclamation-triangle"></i>
+        Delete Category
+      </h2>
+      <button class="close-btn" (click)="closeDeleteModal()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <div class="delete-warning">
+        <i class="fas fa-trash-alt"></i>
+        <p>
+          Are you sure you want to delete <strong>"{{ categoryToDelete?.categoryName }}"</strong>?
+        </p>
+        <p class="warning-text">
+          This action cannot be undone. Expenses using this category may be affected.
+        </p>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-secondary" (click)="closeDeleteModal()" [disabled]="isDeleting">
+        Cancel
+      </button>
+      <button class="btn btn-danger" (click)="confirmDelete()" [disabled]="isDeleting">
+        <span *ngIf="!isDeleting"> <i class="fas fa-trash"></i> Delete </span>
+        <span *ngIf="isDeleting"> <i class="fas fa-spinner fa-spin"></i> Deleting... </span>
+      </button>
+    </div>
+  </div>
+</div>

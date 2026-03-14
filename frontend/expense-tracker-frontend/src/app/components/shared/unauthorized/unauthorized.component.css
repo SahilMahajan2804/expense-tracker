@@ -1,0 +1,25 @@
+/* 403 Unauthorized — Premium */
+.error-container {
+  min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  background: var(--bg-dark);
+  background-image: radial-gradient(ellipse at 30% 50%, rgba(239, 68, 68, 0.08) 0%, transparent 50%);
+  padding: 20px;
+}
+.error-content { background: rgba(255,255,255,0.97); border-radius: var(--radius-xl); padding: 56px; text-align: center; max-width: 500px; box-shadow: var(--shadow-xl); animation: scaleIn 0.4s cubic-bezier(0.16, 1, 0.3, 1); border: 1px solid rgba(239, 68, 68, 0.06); }
+
+.error-icon { width: 96px; height: 96px; background: var(--danger-bg); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; margin: 0 auto 28px; }
+.error-icon i { font-size: 44px; color: var(--danger); }
+
+h1 { font-size: 72px; font-weight: 800; color: var(--text-primary); margin: 0; line-height: 1; font-family: 'Inter Tight', 'Inter', sans-serif; }
+h2 { font-size: 24px; color: var(--danger); margin: 8px 0 16px; font-family: 'Inter Tight', 'Inter', sans-serif; font-weight: 700; }
+p { color: var(--text-secondary); font-size: 15px; margin: 0 0 8px; }
+
+.action-buttons { display: flex; gap: 12px; justify-content: center; margin-top: 28px; }
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 22px; border-radius: var(--radius-sm); font-weight: 600; font-size: 13px; cursor: pointer; transition: all var(--transition-fast); border: none; }
+.btn-secondary { background: #f8f9fb; color: var(--text-primary); border: 1.5px solid var(--border-light); }
+.btn-primary { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; box-shadow: 0 2px 8px var(--primary-glow); }
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px var(--primary-glow); }
+
+.logout-section { margin-top: 28px; padding-top: 20px; border-top: 1px solid var(--border-light); }
+.logout-section a { color: var(--primary); cursor: pointer; font-weight: 700; font-size: 14px; }
+.logout-section a:hover { color: var(--primary-dark); }

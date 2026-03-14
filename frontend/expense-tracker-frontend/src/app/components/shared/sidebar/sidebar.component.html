@@ -1,0 +1,35 @@
+<div
+  class="sidebar-backdrop"
+  *ngIf="mobileNavService.isSidebarActive()"
+  (click)="mobileNavService.closeSidebar()"
+></div>
+
+<aside
+  class="sidebar"
+  [class.collapsed]="isCollapsed()"
+  [class.active]="mobileNavService.isSidebarActive()"
+>
+  <button class="sidebar-toggle" (click)="toggleSidebar()">
+    <i class="fas" [class]="isCollapsed() ? 'fa-chevron-right' : 'fa-chevron-left'"></i>
+  </button>
+
+  <nav class="sidebar-nav">
+    <ul class="nav-list">
+      @for (item of menuItems; track item.route) {
+      <li class="nav-item">
+        <a
+          [routerLink]="item.route"
+          routerLinkActive="active"
+          class="nav-link"
+          (click)="onLinkClick()"
+        >
+          <i [class]="item.icon"></i>
+          @if (!isCollapsed()) {
+          <span class="nav-label">{{ item.label }}</span>
+          }
+        </a>
+      </li>
+      }
+    </ul>
+  </nav>
+</aside>

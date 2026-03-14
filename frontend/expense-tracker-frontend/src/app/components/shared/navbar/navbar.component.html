@@ -1,0 +1,41 @@
+<nav class="navbar">
+  <div class="navbar-container">
+    <div class="navbar-left">
+      <button class="hamburger-menu" (click)="toggleSidebar()" *ngIf="currentUser()">
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="navbar-brand">
+        <i class="fas fa-wallet"></i>
+        <span>Expense Tracker</span>
+      </div>
+    </div>
+
+    @if (currentUser()) {
+    <div class="navbar-user">
+      <div class="user-info">
+        <div class="user-avatar">
+          {{ currentUser()!.firstname.charAt(0) }}{{ currentUser()!.lastname.charAt(0) }}
+        </div>
+        <div class="user-details">
+          <span class="user-name"
+            >{{ currentUser()!.firstname }} {{ currentUser()!.lastname }}</span
+          >
+          <span class="user-role">{{ currentUser()!.role }}</span>
+        </div>
+      </div>
+
+      <div class="navbar-actions">
+        <button class="theme-toggle" (click)="toggleTheme()" [title]="theme() === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'">
+          <i class="fas" [ngClass]="theme() === 'light' ? 'fa-moon' : 'fa-sun'"></i>
+        </button>
+        <a [routerLink]="isAdmin() ? '/admin/dashboard' : '/employee/dashboard'" class="nav-link">
+          <i class="fas fa-home"></i> Dashboard
+        </a>
+        <button class="btn-logout" (click)="logout()">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+      </div>
+    </div>
+    }
+  </div>
+</nav>

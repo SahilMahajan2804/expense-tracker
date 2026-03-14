@@ -1,0 +1,102 @@
+/* ============================================
+   EXPENSE DETAIL — Premium Detail View
+   ============================================ */
+
+.dashboard-layout { min-height: 100vh; background: var(--bg-body); }
+.main-content { margin-left: 250px; margin-top: 64px; padding: 28px; }
+
+.back-link { display: inline-flex; align-items: center; gap: 8px; color: var(--primary); background: none; border: none; font-size: 13px; font-weight: 600; margin-bottom: 14px; cursor: pointer; transition: all var(--transition-fast); text-decoration: none; }
+.back-link:hover { color: var(--primary-dark); gap: 10px; text-decoration: none; }
+
+.page-header { animation: fadeInUp 0.4s ease; }
+.page-header h1 { color: var(--text-primary); font-size: 24px; font-family: 'Inter Tight', 'Inter', sans-serif; font-weight: 700; margin-bottom: 22px; letter-spacing: -0.02em; }
+
+.detail-content { max-width: 900px; }
+
+.detail-card { background: var(--bg-card); border-radius: var(--radius-lg); padding: 24px; box-shadow: var(--shadow-sm); border: 1px solid var(--border-light); margin-bottom: 18px; animation: fadeInUp 0.5s ease both; }
+.detail-card.main-card { border-left: 4px solid var(--primary); }
+
+.card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; padding-bottom: 14px; border-bottom: 1px solid var(--border-light); }
+.card-header h2, .card-header h3 { color: var(--text-primary); margin: 0; display: flex; align-items: center; gap: 10px; font-family: 'Inter Tight', 'Inter', sans-serif; }
+.card-header h2 { font-size: 20px; }
+.card-header h3 { font-size: 16px; }
+.card-header i { color: var(--primary); }
+
+.status-badge { display: inline-block; padding: 5px 14px; border-radius: var(--radius-full); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; }
+.status-pending { background: var(--warning-bg); color: #b45309; }
+.status-approved { background: var(--success-bg); color: var(--success); }
+.status-rejected { background: var(--danger-bg); color: var(--danger); }
+
+.info-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; margin-bottom: 22px; }
+.info-item label { display: block; color: var(--text-muted); font-size: 11px; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.6px; font-weight: 600; }
+.info-item span { color: var(--text-primary); font-size: 15px; font-weight: 500; }
+.info-item .amount { font-size: 26px; font-weight: 800; color: var(--primary); font-family: 'Inter Tight', 'Inter', sans-serif; letter-spacing: -0.02em; }
+
+.description-section { padding-top: 18px; border-top: 1px solid var(--border-light); }
+.description-section label { display: block; color: var(--text-muted); font-size: 11px; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.6px; font-weight: 600; }
+.description-section p { color: var(--text-secondary); font-size: 14px; line-height: 1.7; margin: 0; }
+
+.action-buttons { margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--border-light); }
+.btn { padding: 10px 18px; border-radius: var(--radius-sm); font-weight: 600; font-size: 13px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: all var(--transition-fast); text-decoration: none; border: none; }
+.btn-primary { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; box-shadow: 0 2px 8px var(--primary-glow); }
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px var(--primary-glow); }
+
+/* Attachments */
+.attachments-list { display: flex; flex-direction: column; gap: 10px; }
+.attachment-item { display: flex; justify-content: space-between; align-items: center; padding: 14px; background: #fafbfe; border-radius: var(--radius-sm); border: 1px solid var(--border-light); }
+.attachment-info { display: flex; align-items: center; gap: 12px; }
+.attachment-info i { color: var(--primary); font-size: 18px; }
+.attachment-info span { color: var(--text-primary); font-weight: 500; font-size: 13px; }
+
+.btn-download { background: var(--primary); color: white; border: none; padding: 8px 14px; border-radius: var(--radius-sm); cursor: pointer; display: flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 600; transition: all var(--transition-fast); }
+.btn-download:hover { background: var(--primary-dark); box-shadow: 0 2px 8px var(--primary-glow); }
+
+/* Timeline */
+.approval-timeline { position: relative; padding-left: 30px; }
+.timeline-item { position: relative; padding-bottom: 22px; border-left: 2px solid var(--border-light); padding-left: 24px; margin-left: 10px; }
+.timeline-item:last-child { padding-bottom: 0; border-left: none; }
+
+.timeline-icon { position: absolute; left: -12px; top: 0; width: 24px; height: 24px; border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; color: white; font-size: 11px; box-shadow: 0 0 0 3px var(--bg-card); }
+.timeline-icon.approved { background: linear-gradient(135deg, var(--success), #059669); }
+.timeline-icon.rejected { background: linear-gradient(135deg, var(--danger), #dc2626); }
+
+.timeline-content { background: #fafbfe; padding: 14px; border-radius: var(--radius-sm); border: 1px solid var(--border-light); }
+.timeline-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.timeline-header .decision { font-weight: 700; font-size: 13px; }
+.text-success { color: var(--success); }
+.text-danger { color: var(--danger); }
+.timeline-header .date { color: var(--text-muted); font-size: 11px; }
+.admin-name { color: var(--text-secondary); font-size: 12px; margin: 0; }
+.remarks { color: var(--text-secondary); font-size: 13px; margin: 8px 0 0; padding-top: 8px; border-top: 1px dashed var(--border-light); line-height: 1.5; }
+
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 0;
+    padding: 16px;
+    padding-top: 10px;
+  }
+  .info-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .detail-card {
+    padding: 18px;
+  }
+  .info-item .amount {
+    font-size: 22px;
+  }
+  .attachment-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .btn-download {
+    width: 100%;
+    justify-content: center;
+  }
+}

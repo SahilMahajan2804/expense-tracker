@@ -1,0 +1,55 @@
+services:
+  # MySQL Database
+  - type: database
+    name: expense-db
+    databaseName: expensetracker
+    user: root
+    plan: free
+
+  # Backend Service
+  - type: web
+    name: backend
+    env: docker
+    dockerContext: backend/ExpenseTracker
+    dockerfilePath: backend/ExpenseTracker/Dockerfile
+    plan: free
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        fromDatabase:
+          name: expense-db
+          property: connectionString
+      - key: SPRING_DATASOURCE_USERNAME
+        fromDatabase:
+          name: expense-db
+          property: user
+      - key: SPRING_DATASOURCE_PASSWORD
+        fromDatabase:
+          name: expense-db
+          property: password
+      - key: ALLOWED_ORIGINS
+        fromService:
+          type: web
+          name: frontend
+          property: host
+      - key: SPRING_MAIL_HOST
+        sync: false
+      - key: SPRING_MAIL_PORT
+        sync: false
+      - key: SPRING_MAIL_USERNAME
+        sync: false
+      - key: SPRING_MAIL_PASSWORD
+        sync: false
+
+  # Frontend Service
+  - type: web
+    name: frontend
+    env: docker
+    dockerContext: frontend/expense-tracker-frontend
+    dockerfilePath: frontend/expense-tracker-frontend/Dockerfile
+    plan: free
+    envVars:
+      - key: BACKEND_URL
+        fromService:
+          type: web
+          name: backend
+          property: host

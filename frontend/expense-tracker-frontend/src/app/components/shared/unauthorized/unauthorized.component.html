@@ -1,0 +1,24 @@
+<div class="error-container">
+  <div class="error-content">
+    <div class="error-icon">
+      <i class="fas fa-shield-alt"></i>
+    </div>
+    <h1>403</h1>
+    <h2>Access Denied</h2>
+    <p>Sorry, you don't have permission to access this page.</p>
+
+    <div class="action-buttons">
+      <button class="btn btn-secondary" (click)="goBack()">
+        <i class="fas fa-arrow-left"></i> Go Back
+      </button>
+      <button class="btn btn-primary" (click)="goHome()">
+        <i class="fas fa-home"></i> Go to Dashboard
+      </button>
+    </div>
+
+    <div class="logout-section">
+      <p>Not your account?</p>
+      <a (click)="logout()">Switch Account</a>
+    </div>
+  </div>
+</div>
