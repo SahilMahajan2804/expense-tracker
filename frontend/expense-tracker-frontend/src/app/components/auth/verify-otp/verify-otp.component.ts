@@ -28,11 +28,19 @@ export class VerifyOtpComponent implements OnInit {
   isResending = signal(false);
 
   ngOnInit(): void {
+    // Get email from query params immediately
+    const emailFromUrl = this.route.snapshot.queryParams['email'] || '';
+    this.email.set(emailFromUrl);
+
+    // Also subscribe for any dynamic changes
     this.route.queryParams.subscribe((params) => {
-      this.email.set(params['email'] || '');
+      if (params['email'] && params['email'] !== this.email()) {
+        this.email.set(params['email']);
+      }
     });
 
     if (!this.email()) {
+      this.toastr.warning('Please enter your email to verify account');
       this.router.navigate(['/register']);
     }
   }
