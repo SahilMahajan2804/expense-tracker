@@ -13,18 +13,8 @@ services:
     dockerfilePath: backend/ExpenseTracker/Dockerfile
     plan: free
     envVars:
-      - key: RENDER_DB_HOST
-        fromDatabase:
-          name: expense-db
-          property: host
-      - key: RENDER_DB_PORT
-        fromDatabase:
-          name: expense-db
-          property: port
-      - key: RENDER_DB_NAME
-        fromDatabase:
-          name: expense-db
-          property: database
+      - key: SPRING_DATASOURCE_URL
+        value: jdbc:postgresql://expense-db:5432/expensetracker
       - key: SPRING_DATASOURCE_USERNAME
         fromDatabase:
           name: expense-db
@@ -34,10 +24,7 @@ services:
           name: expense-db
           property: password
       - key: ALLOWED_ORIGINS
-        fromService:
-          type: web
-          name: frontend
-          property: host
+        value: "*"
       - key: SPRING_MAIL_HOST
         sync: false
       - key: SPRING_MAIL_PORT
@@ -56,7 +43,4 @@ services:
     plan: free
     envVars:
       - key: BACKEND_URL
-        fromService:
-          type: web
-          name: backend
-          property: host
+        value: http://backend:8080
