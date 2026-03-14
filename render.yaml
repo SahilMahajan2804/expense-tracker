@@ -51,9 +51,4 @@ services:
     dockerContext: frontend/expense-tracker-frontend
     dockerfilePath: frontend/expense-tracker-frontend/Dockerfile
     plan: free
-    envVars:
-      - key: BACKEND_URL
-        fromService:
-          type: web
-          name: backend
-          property: hostport
+    plan: free

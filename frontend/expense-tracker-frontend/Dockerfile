@@ -11,9 +11,9 @@ FROM nginx:stable-alpine
 # Copy build artifacts to Nginx html directory
 COPY --from=build /app/dist/*/browser /usr/share/nginx/html
 
-# Copy custom nginx config as a template
-COPY nginx.conf /etc/nginx/conf.d/default.conf.template
+# Copy custom nginx config
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Use envsubst to replace variables in Nginx config and start Nginx
+# Start Nginx
 EXPOSE 80
-CMD ["/bin/sh", "-c", "envsubst '${BACKEND_URL}' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"]
+CMD ["nginx", "-g", "daemon off;"]
