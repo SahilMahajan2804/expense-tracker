@@ -196,8 +196,14 @@
   .navbar-user {
     gap: 12px;
   }
-  .user-details,
-  .navbar-actions {
+
+  .user-details {
+    display: none;
+  }
+
+  /* Hide logout & dashboard link on mobile — they live in the sidebar */
+  .navbar-actions .nav-link,
+  .navbar-actions .btn-logout {
     display: none;
   }
 }
