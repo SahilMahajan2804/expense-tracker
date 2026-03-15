@@ -187,14 +187,36 @@
 }
 
 @media (max-width: 768px) {
+  .navbar {
+    height: 60px;
+    border-bottom: 1px solid var(--border-light);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  }
+
+  .navbar-container {
+    padding: 0 16px;
+  }
+
   .hamburger-menu {
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: var(--bg-card-hover);
+  }
+
+  .navbar-brand {
+    font-size: 16px;
+  }
+
+  .navbar-brand i {
+    font-size: 18px;
   }
   
   .navbar-user {
-    gap: 12px;
+    gap: 10px;
   }
 
   .user-details {
@@ -205,5 +227,18 @@
   .navbar-actions .nav-link,
   .navbar-actions .btn-logout {
     display: none;
+  }
+
+  /* Keep theme toggle visible but smaller */
+  .theme-toggle {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
+
+  .user-avatar {
+    width: 34px;
+    height: 34px;
+    font-size: 11px;
   }
 }

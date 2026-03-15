@@ -43,4 +43,57 @@
 .action-btn.secondary:hover { border-color: var(--primary); color: var(--primary); }
 
 @media (max-width: 1200px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 768px) { .main-content { margin-left: 0; padding: 20px; } .stats-grid { grid-template-columns: 1fr; } .amount-grid { grid-template-columns: 1fr; } .action-buttons { flex-direction: column; } }
+
+@media (max-width: 768px) {
+  .main-content { margin-left: 0; padding: 16px; }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .stat-card {
+    padding: 16px;
+    gap: 12px;
+  }
+
+  .stat-icon {
+    width: 44px;
+    height: 44px;
+    font-size: 18px;
+  }
+
+  .stat-info h3 {
+    font-size: 24px;
+  }
+
+  .amount-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .amount-card {
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    text-align: left;
+  }
+
+  .quick-actions {
+    padding: 16px;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .action-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 14px;
+    font-size: 14px;
+    border-radius: 12px;
+  }
+}

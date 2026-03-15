@@ -235,3 +235,81 @@
     gap: 0;
   }
 }
+
+@media (max-width: 768px) {
+  .profile-container {
+    padding: 16px;
+  }
+
+  .profile-header {
+    padding: 20px;
+    background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(99, 102, 241, 0.3);
+  }
+
+  .profile-header .header-content {
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .profile-header .user-info h1 {
+    color: white !important;
+    font-size: 22px !important;
+  }
+
+  .profile-header .role-badge {
+    background: rgba(255,255,255,0.2);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.3);
+  }
+
+  .profile-header .header-actions {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .profile-header .btn-logout-profile {
+    width: 100%;
+    justify-content: center;
+    background: rgba(255,255,255,0.15);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 12px;
+    border-radius: 12px;
+    font-size: 15px;
+    backdrop-filter: blur(10px);
+  }
+
+  .profile-header .btn-logout-profile:hover {
+    background: rgba(255,255,255,0.25);
+    transform: none;
+  }
+
+  .avatar-circle {
+    width: 70px;
+    height: 70px;
+    font-size: 26px;
+    box-shadow: 0 0 0 3px rgba(255,255,255,0.3);
+  }
+
+  .profile-card {
+    padding: 20px 16px;
+  }
+
+  .card-header h3 {
+    font-size: 16px;
+  }
+
+  .form-control {
+    padding: 11px 14px;
+    font-size: 14px;
+  }
+
+  .btn-primary {
+    width: 100%;
+    justify-content: center;
+    padding: 14px;
+    font-size: 15px;
+  }
+}

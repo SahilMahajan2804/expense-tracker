@@ -144,16 +144,21 @@ a:hover {
 }
 @media (max-width: 768px) {
   :root {
-    --radius-lg: 12px;
-    --radius-xl: 16px;
+    --radius-lg: 14px;
+    --radius-xl: 18px;
   }
 
   body {
-    font-size: 13px;
+    font-size: 13.5px;
+  }
+
+  /* Better touch targets */
+  button, a {
+    -webkit-tap-highlight-color: transparent;
   }
 
   h1 { font-size: 20px !important; }
-  h2 { font-size: 18px !important; }
+  h2 { font-size: 17px !important; }
 
   .dashboard-layout {
     display: block;
@@ -162,7 +167,24 @@ a:hover {
   .main-content {
     margin-left: 0 !important;
     padding: 16px !important;
-    margin-top: 64px !important;
+    margin-top: 60px !important; /* match reduced navbar height */
     width: 100% !important;
+    min-height: calc(100vh - 60px) !important;
+  }
+
+  /* Cards feel more native on mobile */
+  .stat-card, .amount-card, .chart-card,
+  .profile-card, .quick-actions-card, .recent-expenses-card {
+    border-radius: 14px !important;
+  }
+
+  /* Page headers on mobile */
+  .page-header {
+    margin-bottom: 20px;
+  }
+
+  /* Better table/list readability on mobile */
+  table {
+    font-size: 12px;
   }
 }
