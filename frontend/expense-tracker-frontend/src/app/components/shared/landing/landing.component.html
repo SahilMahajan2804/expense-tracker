@@ -1,262 +1,121 @@
-<!-- ============================================
-     LANDING PAGE — Premium Hero + Features
-     ============================================ -->
-
 <!-- NAVBAR -->
-<header class="landing-nav">
-  <div class="nav-container">
-    <div class="nav-brand">
+<header class="lp-nav">
+  <div class="lp-nav-inner">
+    <div class="lp-brand">
       <i class="fas fa-wallet"></i>
       <span>ExpenseTracker</span>
     </div>
-    <div class="nav-actions">
-      <a href="#contact" class="btn-nav-link">Contact</a>
-      <a routerLink="/login" class="btn-nav-outline">Sign In</a>
-      <a routerLink="/register" class="btn-nav-solid">Get Started</a>
+    <div class="lp-nav-links">
+      <a routerLink="/login" class="lp-btn-outline">Sign In</a>
+      <a routerLink="/register" class="lp-btn-solid">Sign Up</a>
     </div>
   </div>
 </header>
 
-<!-- HERO SECTION -->
-<section class="hero">
-  <div class="hero-bg-orb orb1"></div>
-  <div class="hero-bg-orb orb2"></div>
-  <div class="hero-bg-orb orb3"></div>
-
-  <div class="hero-content">
-    <div class="hero-badge">
-      <i class="fas fa-bolt"></i>
-      Smart Expense Management
-    </div>
-    <h1>
-      Track Every <span class="gradient-text">Rupee</span><br>
-      with Confidence
-    </h1>
-    <p class="hero-subtitle">
-      A powerful, role-based expense management system for modern teams.
-      Submit, approve, and analyze expenses — all in one place.
+<!-- HERO -->
+<section class="lp-hero">
+  <div class="lp-hero-inner">
+    <div class="lp-tag">Expense Management System</div>
+    <h1>Manage Team Expenses,<br>the Smart Way</h1>
+    <p>
+      ExpenseTracker is a modern, role-based expense management platform built for teams.
+      Employees can submit expenses, admins can review and approve them, and everyone
+      gets real-time email notifications — all in one clean dashboard.
     </p>
-    <div class="hero-cta">
-      <a routerLink="/register" class="btn-hero-primary">
-        <i class="fas fa-rocket"></i> Get Started Free
-      </a>
-      <a routerLink="/login" class="btn-hero-secondary">
-        <i class="fas fa-sign-in-alt"></i> Sign In
-      </a>
-    </div>
-    <div class="hero-trust">
-      <span><i class="fas fa-lock"></i> Secure JWT Auth</span>
-      <span><i class="fas fa-cloud"></i> Cloud Hosted</span>
-      <span><i class="fas fa-mobile-alt"></i> Mobile Ready</span>
+    <div class="lp-cta">
+      <a routerLink="/register" class="lp-btn-solid">Get Started</a>
+      <a routerLink="/login" class="lp-btn-outline">Already have an account? Sign In</a>
     </div>
   </div>
+</section>
 
-  <!-- Hero Visual -->
-  <div class="hero-visual">
-    <div class="dashboard-preview">
-      <div class="preview-header">
-        <div class="preview-dots">
-          <span></span><span></span><span></span>
-        </div>
-        <span class="preview-title">Admin Dashboard</span>
+<!-- ABOUT -->
+<section class="lp-section lp-about">
+  <div class="lp-container">
+    <h2>About the App</h2>
+    <p>
+      ExpenseTracker was built to solve a common problem in organizations — tracking and approving
+      employee expenses without spreadsheets or email chains. It provides a centralized, digital
+      workflow from submission to approval, with full audit history and analytics.
+    </p>
+    <div class="lp-about-grid">
+      <div class="lp-info-card">
+        <i class="fas fa-users"></i>
+        <h3>Who is it for?</h3>
+        <p>Companies and teams that want a simple, digital way to manage employee reimbursements and expense approvals.</p>
       </div>
-      <div class="preview-stats">
-        <div class="preview-stat">
-          <div class="preview-stat-icon total"><i class="fas fa-receipt"></i></div>
-          <div>
-            <div class="preview-stat-value">48</div>
-            <div class="preview-stat-label">Total</div>
-          </div>
-        </div>
-        <div class="preview-stat">
-          <div class="preview-stat-icon pending"><i class="fas fa-clock"></i></div>
-          <div>
-            <div class="preview-stat-value">12</div>
-            <div class="preview-stat-label">Pending</div>
-          </div>
-        </div>
-        <div class="preview-stat">
-          <div class="preview-stat-icon approved"><i class="fas fa-check"></i></div>
-          <div>
-            <div class="preview-stat-value">31</div>
-            <div class="preview-stat-label">Approved</div>
-          </div>
-        </div>
+      <div class="lp-info-card">
+        <i class="fas fa-cogs"></i>
+        <h3>How it works</h3>
+        <p>Employees submit expense requests. Admins approve or reject them with remarks. Everyone is notified by email instantly.</p>
       </div>
-      <div class="preview-chart-bars">
-        <div class="bar" style="height: 40%"></div>
-        <div class="bar" style="height: 65%"></div>
-        <div class="bar" style="height: 50%"></div>
-        <div class="bar" style="height: 80%"></div>
-        <div class="bar" style="height: 60%"></div>
-        <div class="bar active" style="height: 90%"></div>
-        <div class="bar" style="height: 72%"></div>
-      </div>
-      <div class="preview-footer">
-        <span class="preview-amount">Rs. 1,24,500</span>
-        <span class="preview-period">This Month</span>
+      <div class="lp-info-card">
+        <i class="fas fa-chart-bar"></i>
+        <h3>Analytics & Reports</h3>
+        <p>Visual dashboards, category-wise breakdowns, employee spending trends, and one-click PDF report exports.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- STATS STRIP -->
-<section class="stats-strip">
-  @for (stat of stats; track stat.label) {
-  <div class="strip-stat">
-    <div class="strip-value">{{ stat.value }}</div>
-    <div class="strip-label">{{ stat.label }}</div>
-  </div>
-  }
-</section>
-
-<!-- FEATURES -->
-<section class="features-section">
-  <div class="section-container">
-    <div class="section-header">
-      <div class="section-badge">Features</div>
-      <h2>Everything your team needs</h2>
-      <p>Purpose-built for expense management — from submission to analytics.</p>
-    </div>
-    <div class="features-grid">
-      @for (feature of features; track feature.title) {
-      <div class="feature-card">
-        <div class="feature-icon">
-          <i [class]="feature.icon"></i>
-        </div>
-        <h3>{{ feature.title }}</h3>
-        <p>{{ feature.desc }}</p>
-      </div>
-      }
-    </div>
+<!-- KEY FEATURES -->
+<section class="lp-section lp-features-plain">
+  <div class="lp-container">
+    <h2>Key Features</h2>
+    <ul class="lp-feature-list">
+      <li><i class="fas fa-check"></i> Submit and track expense requests with file attachments</li>
+      <li><i class="fas fa-check"></i> Admin approval workflow with remarks and bulk actions</li>
+      <li><i class="fas fa-check"></i> Email notifications via Brevo for every status change</li>
+      <li><i class="fas fa-check"></i> OTP-based email verification for secure onboarding</li>
+      <li><i class="fas fa-check"></i> Forgot password and reset flow via email OTP</li>
+      <li><i class="fas fa-check"></i> Category-wise and employee-wise analytics dashboard</li>
+      <li><i class="fas fa-check"></i> Export expense reports as PDF — daily, monthly, or yearly</li>
+      <li><i class="fas fa-check"></i> Role-based access: Admin and Employee</li>
+      <li><i class="fas fa-check"></i> Mobile-friendly and dark mode supported</li>
+    </ul>
   </div>
 </section>
 
-<!-- HOW IT WORKS -->
-<section class="how-section">
-  <div class="section-container">
-    <div class="section-header">
-      <div class="section-badge">How it works</div>
-      <h2>Simple & Streamlined</h2>
-    </div>
-    <div class="steps-grid">
-      <div class="step">
-        <div class="step-number">1</div>
-        <h3>Register & Verify</h3>
-        <p>Sign up as an employee or admin. Verify your email via OTP.</p>
-      </div>
-      <div class="step-arrow"><i class="fas fa-arrow-right"></i></div>
-      <div class="step">
-        <div class="step-number">2</div>
-        <h3>Submit Expenses</h3>
-        <p>Employees submit expenses with receipts, categories, and descriptions.</p>
-      </div>
-      <div class="step-arrow"><i class="fas fa-arrow-right"></i></div>
-      <div class="step">
-        <div class="step-number">3</div>
-        <h3>Admin Reviews</h3>
-        <p>Admins approve or reject with remarks. Everyone gets email notifications.</p>
-      </div>
-      <div class="step-arrow"><i class="fas fa-arrow-right"></i></div>
-      <div class="step">
-        <div class="step-number">4</div>
-        <h3>Analyze & Export</h3>
-        <p>View analytics, export professional PDF reports, and track trends.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CTA SECTION -->
-<section class="cta-section">
-  <div class="section-container">
-    <div class="cta-card">
-      <div class="cta-orb"></div>
-      <h2>Ready to streamline your expenses?</h2>
-      <p>Join your team on ExpenseTracker and start managing smarter today.</p>
-      <div class="cta-buttons">
-        <a routerLink="/register" class="btn-hero-primary">
-          <i class="fas fa-user-plus"></i> Create Account
-        </a>
-        <a routerLink="/login" class="btn-hero-secondary light">
-          <i class="fas fa-sign-in-alt"></i> Sign In
-        </a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CONTACT US -->
-<section class="contact-section" id="contact">
-  <div class="section-container">
-    <div class="section-header">
-      <div class="section-badge">Contact</div>
-      <h2>Get in touch</h2>
-      <p>Have questions or feedback? We'd love to hear from you.</p>
-    </div>
-
-    <div class="contact-grid">
-      <!-- Contact Cards -->
-      <div class="contact-cards">
-        <div class="contact-card">
-          <div class="contact-card-icon"><i class="fas fa-envelope"></i></div>
-          <div>
-            <h4>Email Us</h4>
-            <a href="mailto:sahilmahajan2804@gmail.com">sahilmahajan2804&#64;gmail.com</a>
-          </div>
-        </div>
-        <div class="contact-card">
-          <div class="contact-card-icon github"><i class="fab fa-github"></i></div>
-          <div>
-            <h4>Source Code</h4>
-            <a href="https://github.com/SahilMahajan2804/expense-tracker" target="_blank">github.com/SahilMahajan2804</a>
-          </div>
-        </div>
-        <div class="contact-card">
-          <div class="contact-card-icon support"><i class="fas fa-headset"></i></div>
-          <div>
-            <h4>Support Hours</h4>
-            <span>Mon – Fri, 9am – 6pm IST</span>
-          </div>
+<!-- CONTACT -->
+<section class="lp-section lp-contact" id="contact">
+  <div class="lp-container">
+    <h2>Contact & Support</h2>
+    <p class="lp-contact-sub">Have a question or need help? Reach out to us.</p>
+    <div class="lp-contact-items">
+      <div class="lp-contact-item">
+        <i class="fas fa-envelope"></i>
+        <div>
+          <span class="label">Email</span>
+          <a href="mailto:sahilmahajan2804@gmail.com">sahilmahajan2804&#64;gmail.com</a>
         </div>
       </div>
-
-      <!-- Contact Form -->
-      <div class="contact-form-card">
-        <h3>Send a message</h3>
-        <div class="form-row">
-          <div class="form-group">
-            <label>Your Name</label>
-            <input type="text" placeholder="Sahil Mahajan" class="contact-input">
-          </div>
-          <div class="form-group">
-            <label>Email</label>
-            <input type="email" placeholder="you@example.com" class="contact-input">
-          </div>
+      <div class="lp-contact-item">
+        <i class="fab fa-github"></i>
+        <div>
+          <span class="label">GitHub</span>
+          <a href="https://github.com/SahilMahajan2804/expense-tracker" target="_blank">SahilMahajan2804 / expense-tracker</a>
         </div>
-        <div class="form-group">
-          <label>Message</label>
-          <textarea rows="4" placeholder="Tell us how we can help..." class="contact-input contact-textarea"></textarea>
+      </div>
+      <div class="lp-contact-item">
+        <i class="fas fa-clock"></i>
+        <div>
+          <span class="label">Support</span>
+          <span>Mon – Fri, 9 AM – 6 PM IST</span>
         </div>
-        <button class="contact-submit">
-          <i class="fas fa-paper-plane"></i> Send Message
-        </button>
       </div>
     </div>
   </div>
 </section>
 
 <!-- FOOTER -->
-<footer class="landing-footer">
-  <div class="footer-container">
-    <div class="footer-brand">
-      <i class="fas fa-wallet"></i> ExpenseTracker
-    </div>
-    <div class="footer-links">
+<footer class="lp-footer">
+  <div class="lp-footer-inner">
+    <span class="lp-footer-brand"><i class="fas fa-wallet"></i> ExpenseTracker</span>
+    <div class="lp-footer-links">
       <a routerLink="/login">Sign In</a>
       <a routerLink="/register">Sign Up</a>
       <a href="#contact">Contact</a>
     </div>
-    <p class="footer-copy">© {{ currentYear }} ExpenseTracker. Built with ❤️</p>
+    <span class="lp-footer-copy">© {{ currentYear }} ExpenseTracker</span>
   </div>
 </footer>
