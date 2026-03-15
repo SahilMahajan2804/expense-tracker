@@ -12,6 +12,8 @@
   margin-top: 64px;
   padding: 28px;
   min-height: calc(100vh - 64px);
+  width: calc(100% - 250px);
+  transition: all var(--transition-base);
 }
 
 /* Page Header */
@@ -493,6 +495,7 @@
 @media (max-width: 992px) {
   .main-content {
     margin-left: 0;
+    width: 100%;
     padding: 20px;
   }
 
