@@ -765,3 +765,67 @@ tr.selected {
   color: var(--primary);
   font-size: 1.1em;
 }
+
+/* PDF Period Selector */
+.pdf-modal {
+  max-width: 500px;
+}
+
+.pdf-period-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.period-chip {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 18px;
+  border-radius: var(--radius-full);
+  border: 1.5px solid var(--border-light);
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.period-chip:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.period-chip.active {
+  background: linear-gradient(135deg, #6366f1, #a855f7);
+  border-color: transparent;
+  color: white;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.35);
+}
+
+.custom-date-range {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.pdf-info-box {
+  background: rgba(99, 102, 241, 0.06);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  color: var(--text-secondary);
+  font-size: 12.5px;
+  line-height: 1.5;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.pdf-info-box i {
+  color: var(--primary);
+  margin-top: 2px;
+}

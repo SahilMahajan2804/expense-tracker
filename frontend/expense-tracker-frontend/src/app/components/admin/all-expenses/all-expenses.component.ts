@@ -344,37 +344,172 @@ export class AllExpensesComponent implements OnInit {
     window.URL.revokeObjectURL(url);
   }
 
-  exportToPDF(): void {
-    const doc = new jsPDF();
-    const data = this.filteredExpenses().map(e => [
-      e.expenseId,
-      e.employeeName,
-      e.categoryName || 'N/A',
-      this.formatAmount(e.amount),
-      this.formatDate(e.expenseDate),
-      e.status
-    ]);
+  // PDF Period Filter State
+  showPdfModal = signal(false);
+  pdfPeriodType = signal<'today' | 'monthly' | 'yearly' | 'custom'>('monthly');
+  pdfCustomStart = signal('');
+  pdfCustomEnd = signal('');
 
-    doc.setFontSize(18);
-    doc.text('Expense Report', 14, 22);
-    doc.setFontSize(11);
-    doc.setTextColor(100);
-    doc.text(`Generated on: ${new Date().toLocaleString()}`, 14, 30);
+  openPdfModal(): void {
+    const now = new Date();
+    const firstDay = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split('T')[0];
+    const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0).toISOString().split('T')[0];
+    this.pdfCustomStart.set(firstDay);
+    this.pdfCustomEnd.set(lastDay);
+    this.showPdfModal.set(true);
+  }
 
-    autoTable(doc, {
-      startY: 40,
-      head: [['ID', 'Employee', 'Category', 'Amount', 'Date', 'Status']],
-      body: data,
-      theme: 'grid',
-      headStyles: { fillColor: [102, 126, 234], textColor: 255 },
-      styles: { fontSize: 9 },
-      columnStyles: {
-        3: { halign: 'right' },
-        0: { cellWidth: 15 }
+  closePdfModal(): void {
+    this.showPdfModal.set(false);
+  }
+
+  getExpensesForPDF(): any[] {
+    const expenses = this.filteredExpenses();
+    const now = new Date();
+    const type = this.pdfPeriodType();
+    return expenses.filter(e => {
+      const date = new Date(e.expenseDate);
+      if (type === 'today') return date.toDateString() === now.toDateString();
+      if (type === 'monthly') return date.getMonth() === now.getMonth() && date.getFullYear() === now.getFullYear();
+      if (type === 'yearly') return date.getFullYear() === now.getFullYear();
+      if (type === 'custom') {
+        const start = new Date(this.pdfCustomStart());
+        const end = new Date(this.pdfCustomEnd());
+        end.setHours(23, 59, 59);
+        return date >= start && date <= end;
       }
+      return true;
+    });
+  }
+
+  formatAmountPDF(amount: number): string {
+    // Avoid Unicode rupee symbol that jsPDF cannot render - use Rs. prefix instead
+    const parts = Math.abs(amount).toFixed(2).split('.');
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    return `Rs. ${parts.join('.')}`;
+  }
+
+  generatePDF(): void {
+    const expenses = this.getExpensesForPDF();
+    const doc = new jsPDF();
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const now = new Date();
+    const type = this.pdfPeriodType();
+
+    let periodLabel = '';
+    if (type === 'today') periodLabel = now.toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' });
+    else if (type === 'monthly') periodLabel = now.toLocaleDateString('en-IN', { month: 'long', year: 'numeric' });
+    else if (type === 'yearly') periodLabel = `Year ${now.getFullYear()}`;
+    else periodLabel = `${this.pdfCustomStart()} to ${this.pdfCustomEnd()}`;
+
+    // Header Banner
+    doc.setFillColor(102, 102, 241);
+    doc.rect(0, 0, pageWidth, 32, 'F');
+    doc.setFontSize(18);
+    doc.setTextColor(255, 255, 255);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Expense Report', 14, 14);
+    doc.setFontSize(9);
+    doc.setFont('helvetica', 'normal');
+    doc.text(`Period: ${periodLabel}`, 14, 22);
+    doc.text(`Generated: ${now.toLocaleString('en-IN')}`, 14, 28);
+
+    let y = 42;
+
+    // Summary Section
+    const total = expenses.reduce((s, e) => s + e.amount, 0);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(11);
+    doc.setTextColor(40, 40, 40);
+    doc.text('Summary', 14, y);
+    y += 5;
+    autoTable(doc, {
+      startY: y,
+      head: [['Metric', 'Count', 'Total Amount']],
+      body: [
+        ['All Expenses', `${expenses.length}`, this.formatAmountPDF(total)],
+        ['Approved', `${expenses.filter(e => e.status === 'APPROVED').length}`, this.formatAmountPDF(expenses.filter(e => e.status === 'APPROVED').reduce((s, e) => s + e.amount, 0))],
+        ['Pending', `${expenses.filter(e => e.status === 'PENDING').length}`, this.formatAmountPDF(expenses.filter(e => e.status === 'PENDING').reduce((s, e) => s + e.amount, 0))],
+        ['Rejected', `${expenses.filter(e => e.status === 'REJECTED').length}`, this.formatAmountPDF(expenses.filter(e => e.status === 'REJECTED').reduce((s, e) => s + e.amount, 0))],
+      ],
+      theme: 'grid',
+      headStyles: { fillColor: [70, 70, 200], textColor: 255, fontSize: 9 },
+      styles: { fontSize: 9 },
+      columnStyles: { 2: { halign: 'right' } }
+    });
+    y = (doc as any).lastAutoTable.finalY + 10;
+
+    // Category-wise Breakdown
+    const catMap = new Map<string, { count: number; total: number }>();
+    expenses.forEach(e => {
+      const cat = e.categoryName || 'Uncategorized';
+      const cur = catMap.get(cat) || { count: 0, total: 0 };
+      catMap.set(cat, { count: cur.count + 1, total: cur.total + e.amount });
+    });
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(11);
+    doc.setTextColor(40, 40, 40);
+    doc.text('Category-wise Breakdown', 14, y);
+    y += 5;
+    autoTable(doc, {
+      startY: y,
+      head: [['Category', 'Expenses', 'Total Amount']],
+      body: Array.from(catMap.entries()).sort((a, b) => b[1].total - a[1].total)
+        .map(([cat, d]) => [cat, `${d.count}`, this.formatAmountPDF(d.total)]),
+      theme: 'grid',
+      headStyles: { fillColor: [50, 160, 100], textColor: 255, fontSize: 9 },
+      styles: { fontSize: 9 },
+      columnStyles: { 2: { halign: 'right' } }
+    });
+    y = (doc as any).lastAutoTable.finalY + 10;
+
+    // Employee-wise Breakdown
+    const empMap = new Map<string, { count: number; total: number }>();
+    expenses.forEach(e => {
+      const cur = empMap.get(e.employeeName) || { count: 0, total: 0 };
+      empMap.set(e.employeeName, { count: cur.count + 1, total: cur.total + e.amount });
+    });
+    if (y > 220) { doc.addPage(); y = 20; }
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(11);
+    doc.setTextColor(40, 40, 40);
+    doc.text('Employee-wise Breakdown', 14, y);
+    y += 5;
+    autoTable(doc, {
+      startY: y,
+      head: [['Employee', 'Expenses', 'Total Amount']],
+      body: Array.from(empMap.entries()).sort((a, b) => b[1].total - a[1].total)
+        .map(([emp, d]) => [emp, `${d.count}`, this.formatAmountPDF(d.total)]),
+      theme: 'grid',
+      headStyles: { fillColor: [200, 130, 50], textColor: 255, fontSize: 9 },
+      styles: { fontSize: 9 },
+      columnStyles: { 2: { halign: 'right' } }
+    });
+    y = (doc as any).lastAutoTable.finalY + 10;
+
+    // Expense Details Table
+    if (y > 220) { doc.addPage(); y = 20; }
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(11);
+    doc.setTextColor(40, 40, 40);
+    doc.text('Expense Details', 14, y);
+    y += 5;
+    autoTable(doc, {
+      startY: y,
+      head: [['Employee', 'Category', 'Amount', 'Date', 'Status']],
+      body: expenses.map(e => [
+        e.employeeName, e.categoryName || 'N/A',
+        this.formatAmountPDF(e.amount), this.formatDate(e.expenseDate), e.status
+      ]),
+      theme: 'grid',
+      headStyles: { fillColor: [102, 102, 241], textColor: 255, fontSize: 9 },
+      styles: { fontSize: 8.5 },
+      columnStyles: { 2: { halign: 'right' }, 4: { halign: 'center' } }
     });
 
-    doc.save(`expenses_${new Date().toISOString().split('T')[0]}.pdf`);
+    doc.save(`Expense_Report_${type}_${now.toISOString().split('T')[0]}.pdf`);
+    this.closePdfModal();
+    this.toastr.success('PDF report generated!');
   }
 
   viewBill(expense: Expense): void {
@@ -382,7 +517,6 @@ export class AllExpensesComponent implements OnInit {
       this.toastr.info('No attachments found for this expense');
       return;
     }
-
     const attachment = expense.attachments[0];
     this.attachmentService.downloadFile(attachment.attachmentId).subscribe({
       next: (blob) => {

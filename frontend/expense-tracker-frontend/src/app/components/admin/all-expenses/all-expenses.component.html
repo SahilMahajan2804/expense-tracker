@@ -10,7 +10,7 @@
         <p>Manage and review all expense requests</p>
       </div>
       <div class="header-right">
-        <button class="btn btn-outline" (click)="exportToPDF()">
+        <button class="btn btn-outline" (click)="openPdfModal()">
           <i class="fas fa-file-pdf"></i> Export PDF
         </button>
         <button class="btn btn-outline" (click)="exportToCSV()">
@@ -452,6 +452,60 @@
         } @else { 
           <i class="fas fa-spinner fa-spin"></i> Processing... 
         }
+      </button>
+    </div>
+  </div>
+</div>
+}
+
+<!-- PDF Period Selector Modal -->
+@if (showPdfModal()) {
+<div class="modal-overlay" (click)="closePdfModal()">
+  <div class="modal-content pdf-modal" (click)="$event.stopPropagation()">
+    <div class="modal-header" style="background: linear-gradient(135deg, #6366f1, #a855f7);">
+      <h2><i class="fas fa-file-pdf"></i> Export PDF Report</h2>
+      <button class="close-btn" (click)="closePdfModal()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <p style="color: var(--text-secondary); margin-bottom: 16px;">Choose the period for the expense report:</p>
+
+      <div class="pdf-period-chips">
+        <button class="period-chip" [class.active]="pdfPeriodType() === 'today'" (click)="pdfPeriodType.set('today')">
+          <i class="fas fa-calendar-day"></i> Today
+        </button>
+        <button class="period-chip" [class.active]="pdfPeriodType() === 'monthly'" (click)="pdfPeriodType.set('monthly')">
+          <i class="fas fa-calendar-alt"></i> This Month
+        </button>
+        <button class="period-chip" [class.active]="pdfPeriodType() === 'yearly'" (click)="pdfPeriodType.set('yearly')">
+          <i class="fas fa-calendar"></i> This Year
+        </button>
+        <button class="period-chip" [class.active]="pdfPeriodType() === 'custom'" (click)="pdfPeriodType.set('custom')">
+          <i class="fas fa-sliders-h"></i> Custom Range
+        </button>
+      </div>
+
+      @if (pdfPeriodType() === 'custom') {
+      <div class="custom-date-range">
+        <div class="form-group">
+          <label>Start Date</label>
+          <input type="date" class="form-control" [value]="pdfCustomStart()" (input)="pdfCustomStart.set($any($event.target).value)">
+        </div>
+        <div class="form-group">
+          <label>End Date</label>
+          <input type="date" class="form-control" [value]="pdfCustomEnd()" (input)="pdfCustomEnd.set($any($event.target).value)">
+        </div>
+      </div>
+      }
+
+      <div class="pdf-info-box">
+        <i class="fas fa-info-circle"></i>
+        The report will include: expense summary, category-wise totals, employee-wise totals, and a full expense listing.
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" (click)="closePdfModal()">Cancel</button>
+      <button class="btn btn-success" (click)="generatePDF()">
+        <i class="fas fa-download"></i> Generate PDF
       </button>
     </div>
   </div>
