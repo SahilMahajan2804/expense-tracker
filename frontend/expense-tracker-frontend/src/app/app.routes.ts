@@ -158,6 +158,12 @@ export const routes: Routes = [
 
   // ==================== APP ROUTES (Common Protected) ====================
   {
+    path: 'profile',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./components/shared/profile/profile.component').then((m) => m.ProfileComponent),
+  },
+  {
     path: 'about',
     canActivate: [authGuard],
     loadComponent: () =>

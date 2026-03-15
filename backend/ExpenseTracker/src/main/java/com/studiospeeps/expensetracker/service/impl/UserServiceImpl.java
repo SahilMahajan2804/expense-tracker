@@ -57,6 +57,10 @@ public class UserServiceImpl implements UserService {
 
         Users user = modelMapper.map(request, Users.class);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
+        
+        // Explicitly set role from request or default to EMPLOYEE
+        user.setRole(request.getRole() != null ? request.getRole() : com.studiospeeps.expensetracker.entity.Role.EMPLOYEE);
+        
         String otp = generateOtp();
         user.setOtp(otp);
         user = userRepo.save(user);
@@ -161,8 +165,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserProfileResponse updateUserById(Long id, RegisterRequest request) {
         Users user = userRepo.findById(id).orElseThrow(() -> new UsernameNotFoundException("User not found "));
-        modelMapper.map(request, user);
-        user.setId(id);
+        
+        user.setFirstname(request.getFirstname());
+        user.setLastname(request.getLastname());
+        user.setPhone(request.getPhone());
+        user.setDepartment(request.getDepartment());
+        
         user = userRepo.save(user);
         return modelMapper.map(user, UserProfileResponse.class);
     }
