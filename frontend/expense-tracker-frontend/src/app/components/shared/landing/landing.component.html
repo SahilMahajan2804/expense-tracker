@@ -10,6 +10,7 @@
       <span>ExpenseTracker</span>
     </div>
     <div class="nav-actions">
+      <a href="#contact" class="btn-nav-link">Contact</a>
       <a routerLink="/login" class="btn-nav-outline">Sign In</a>
       <a routerLink="/register" class="btn-nav-solid">Get Started</a>
     </div>
@@ -185,6 +186,66 @@
   </div>
 </section>
 
+<!-- CONTACT US -->
+<section class="contact-section" id="contact">
+  <div class="section-container">
+    <div class="section-header">
+      <div class="section-badge">Contact</div>
+      <h2>Get in touch</h2>
+      <p>Have questions or feedback? We'd love to hear from you.</p>
+    </div>
+
+    <div class="contact-grid">
+      <!-- Contact Cards -->
+      <div class="contact-cards">
+        <div class="contact-card">
+          <div class="contact-card-icon"><i class="fas fa-envelope"></i></div>
+          <div>
+            <h4>Email Us</h4>
+            <a href="mailto:sahilmahajan2804@gmail.com">sahilmahajan2804&#64;gmail.com</a>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-card-icon github"><i class="fab fa-github"></i></div>
+          <div>
+            <h4>Source Code</h4>
+            <a href="https://github.com/SahilMahajan2804/expense-tracker" target="_blank">github.com/SahilMahajan2804</a>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-card-icon support"><i class="fas fa-headset"></i></div>
+          <div>
+            <h4>Support Hours</h4>
+            <span>Mon – Fri, 9am – 6pm IST</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact Form -->
+      <div class="contact-form-card">
+        <h3>Send a message</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Your Name</label>
+            <input type="text" placeholder="Sahil Mahajan" class="contact-input">
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" placeholder="you@example.com" class="contact-input">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Message</label>
+          <textarea rows="4" placeholder="Tell us how we can help..." class="contact-input contact-textarea"></textarea>
+        </div>
+        <button class="contact-submit">
+          <i class="fas fa-paper-plane"></i> Send Message
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- FOOTER -->
 <footer class="landing-footer">
   <div class="footer-container">
@@ -194,6 +255,7 @@
     <div class="footer-links">
       <a routerLink="/login">Sign In</a>
       <a routerLink="/register">Sign Up</a>
+      <a href="#contact">Contact</a>
     </div>
     <p class="footer-copy">© {{ currentYear }} ExpenseTracker. Built with ❤️</p>
   </div>
