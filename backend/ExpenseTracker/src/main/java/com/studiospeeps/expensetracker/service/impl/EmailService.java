@@ -31,17 +31,26 @@ public class EmailService {
 
     @Async
     public void sendMail(String to, String sub, String body) {
-        System.out.println("DEBUG [" + Thread.currentThread().getName() + "]: Attempting to send Brevo email to " + to);
+        String trimmedKey = apiKey.trim();
+        System.out.println("DEBUG [" + Thread.currentThread().getName() + "]: Sending email to " + to);
+        
+        // Safe logging to verify key without exposing it
+        if (trimmedKey.length() > 10) {
+            String masked = trimmedKey.substring(0, 4) + "****" + trimmedKey.substring(trimmedKey.length() - 4);
+            System.out.println("DEBUG: Using API Key (length: " + trimmedKey.length() + "): " + masked);
+        } else {
+            System.out.println("DEBUG: API Key seems too short or invalid (length: " + trimmedKey.length() + ")");
+        }
 
-        if ("NO_KEY".equals(apiKey)) {
-            System.err.println("CRITICAL ERROR: Brevo API Key is missing! Please set BREVO_API_KEY environment variable.");
+        if ("NO_KEY".equals(trimmedKey)) {
+            System.err.println("CRITICAL ERROR: Brevo API Key is missing! Set BREVO_API_KEY in Render.");
             return;
         }
 
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
-            headers.set("api-key", apiKey);
+            headers.set("api-key", trimmedKey);
 
             BrevoEmailRequest request = BrevoEmailRequest.builder()
                     .sender(new BrevoEmailRequest.Sender(senderName, senderEmail))
