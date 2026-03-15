@@ -16,7 +16,7 @@ import java.util.Collections;
 @RequiredArgsConstructor
 public class EmailService {
 
-    private final RestTemplate restTemplate = new RestTemplate();
+    private final RestTemplate restTemplate;
 
     @Value("${BREVO_API_KEY:NO_KEY}")
     private String apiKey;
