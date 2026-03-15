@@ -184,4 +184,46 @@ public class UserServiceImpl implements UserService {
         return userProfileResponse;
     }
 
+    @Override
+    public ResponseEntity<?> forgotPassword(String email) {
+        Users user = userRepo.findByEmail(email);
+        if (user == null) {
+            throw new RuntimeException("User not found with email: " + email);
+        }
+
+        String otp = generateOtp();
+        user.setOtp(otp);
+        userRepo.save(user);
+
+        String subject = "Password Reset OTP";
+        String body = "Your password reset OTP is: " + otp + ". It will be used to reset your password.";
+        emailService.sendMail(email, subject, body);
+
+        return ResponseEntity.ok(ApiResponse.builder()
+                .message("Password reset OTP has been sent to your email.")
+                .success(true)
+                .build());
+    }
+
+    @Override
+    public ResponseEntity<?> resetPassword(ResetPasswordRequest request) {
+        Users user = userRepo.findByEmail(request.getEmail());
+        if (user == null) {
+            throw new RuntimeException("User not found with email: " + request.getEmail());
+        }
+
+        if (user.getOtp() == null || !user.getOtp().equals(request.getOtp())) {
+            throw new RuntimeException("Invalid OTP. Please check your email and try again.");
+        }
+
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        user.setOtp(null); // Clear OTP after use
+        userRepo.save(user);
+
+        return ResponseEntity.ok(ApiResponse.builder()
+                .message("Password has been reset successfully. You can now login with your new password.")
+                .success(true)
+                .build());
+    }
+
 }

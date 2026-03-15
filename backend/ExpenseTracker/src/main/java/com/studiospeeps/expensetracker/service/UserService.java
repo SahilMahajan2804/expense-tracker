@@ -20,4 +20,6 @@ public interface UserService {
     ResponseEntity<String> deleteUserById(Long id);
 
     UserProfileResponse getUserByEmail(String email);
+    ResponseEntity<?> forgotPassword(String email);
+    ResponseEntity<?> resetPassword(ResetPasswordRequest request);
 }

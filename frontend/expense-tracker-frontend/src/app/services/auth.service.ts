@@ -11,6 +11,8 @@ import {
   OtpRequest,
   OtpResponse,
   Role,
+  ForgotPasswordRequest,
+  ResetPasswordRequest,
 } from '../models/user.model';
 
 @Injectable({
@@ -74,5 +76,13 @@ export class AuthService {
   getUserRole(): string | null {
     const role = this.currentUserSignal()?.role;
     return role ? role.toString() : null;
+  }
+
+  forgotPassword(email: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/forgot-password`, { email });
+  }
+
+  resetPassword(request: ResetPasswordRequest): Observable<any> {
+    return this.http.post(`${this.apiUrl}/reset-password`, request);
   }
 }

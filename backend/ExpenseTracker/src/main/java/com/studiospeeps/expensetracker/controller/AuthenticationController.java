@@ -33,4 +33,14 @@ public class AuthenticationController {
         return userService.login(request, response);
     }
 
+    @PostMapping("/forgot-password")
+    public ResponseEntity<?> forgotPassword(@RequestBody ForgotPasswordRequest request) {
+        return userService.forgotPassword(request.getEmail());
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordRequest request) {
+        return userService.resetPassword(request);
+    }
+
 }
