@@ -18,13 +18,13 @@ public class EmailService {
 
     private final RestTemplate restTemplate;
 
-    @Value("${BREVO_API_KEY:NO_KEY}")
+    @Value("${brevo.api.key}")
     private String apiKey;
 
-    @Value("${BREVO_SENDER_EMAIL:sahilmahajan2804@gmail.com}")
+    @Value("${brevo.sender.email}")
     private String senderEmail;
 
-    @Value("${BREVO_SENDER_NAME:Expense Tracker}")
+    @Value("${brevo.sender.name}")
     private String senderName;
 
     private static final String BREVO_API_URL = "https://api.brevo.com/v3/smtp/email";
