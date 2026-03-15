@@ -43,6 +43,29 @@
   color: #1e293b;
 }
 
+.header-actions {
+  margin-left: auto;
+}
+
+.btn-logout-profile {
+  background: #fee2e2;
+  color: #ef4444;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s;
+}
+
+.btn-logout-profile:hover {
+  background: #fecaca;
+  transform: translateY(-1px);
+}
+
 .role-badge {
   background: #f1f5f9;
   color: #64748b;

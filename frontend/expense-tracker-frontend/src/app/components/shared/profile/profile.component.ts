@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from '../../../services/user.service';
+import { AuthService } from '../../../services/auth.service';
 import { User } from '../../../models/user.model';
 import { NavbarComponent } from '../../shared/navbar/navbar.component';
 import { SidebarComponent } from '../../shared/sidebar/sidebar.component';
@@ -23,6 +24,7 @@ import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-sp
 })
 export class ProfileComponent implements OnInit {
   private userService = inject(UserService);
+  private authService = inject(AuthService);
   private fb = inject(FormBuilder);
   private toastr = inject(ToastrService);
 
@@ -102,5 +104,9 @@ export class ProfileComponent implements OnInit {
     const user = this.user();
     if (!user) return '';
     return `${user.firstname.charAt(0)}${user.lastname.charAt(0)}`.toUpperCase();
+  }
+
+  logout(): void {
+    this.authService.logout();
   }
 }
