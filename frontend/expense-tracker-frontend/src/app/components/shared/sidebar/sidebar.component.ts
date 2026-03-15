@@ -56,4 +56,9 @@ export class SidebarComponent {
       this.mobileNavService.closeSidebar();
     }
   }
+
+  logout(): void {
+    this.authService.logout();
+    this.onLinkClick();
+  }
 }

@@ -33,4 +33,13 @@
       }
     </ul>
   </nav>
+
+  <div class="sidebar-footer">
+    <button class="nav-link logout-btn" (click)="logout()">
+      <i class="fas fa-sign-out-alt"></i>
+      @if (!isCollapsed()) {
+      <span class="nav-label">Logout</span>
+      }
+    </button>
+  </div>
 </aside>

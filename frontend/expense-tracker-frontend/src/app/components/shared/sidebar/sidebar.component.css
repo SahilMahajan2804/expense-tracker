@@ -118,6 +118,30 @@
   font-size: 13px;
 }
 
+.sidebar-footer {
+  margin-top: auto;
+  padding: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logout-btn {
+  width: 100%;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #ef4444 !important;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 12px;
+  transition: all 0.2s;
+}
+
+.logout-btn:hover {
+  background: rgba(239, 68, 68, 0.1);
+}
+
 @media (max-width: 768px) {
   .sidebar {
     transform: translateX(-100%);

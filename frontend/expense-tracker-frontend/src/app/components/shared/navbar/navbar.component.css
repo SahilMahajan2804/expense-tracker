@@ -196,7 +196,8 @@
   .navbar-user {
     gap: 12px;
   }
-  .user-details {
+  .user-details,
+  .navbar-actions {
     display: none;
   }
 }
