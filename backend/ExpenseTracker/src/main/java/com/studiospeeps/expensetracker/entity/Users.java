@@ -43,6 +43,7 @@ public class Users {
     private String otp;
 
 
+    @Builder.Default
     private boolean isVerified = false;
 
     @Column(nullable = false, updatable = false)

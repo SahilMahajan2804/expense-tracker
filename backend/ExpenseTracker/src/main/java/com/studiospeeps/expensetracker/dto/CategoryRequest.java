@@ -13,5 +13,6 @@ public class CategoryRequest {
     private String categoryName;
 
     private String description;
+    @Builder.Default
     private Boolean isActive = true;
 }

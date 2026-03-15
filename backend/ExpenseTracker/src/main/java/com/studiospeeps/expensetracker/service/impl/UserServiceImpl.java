@@ -5,7 +5,6 @@ import com.studiospeeps.expensetracker.entity.Users;
 import com.studiospeeps.expensetracker.repo.UserRepository;
 import com.studiospeeps.expensetracker.service.JwtService;
 import com.studiospeeps.expensetracker.service.UserService;
-import jakarta.mail.MessagingException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
