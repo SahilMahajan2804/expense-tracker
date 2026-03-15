@@ -48,7 +48,7 @@ services:
 
   # Frontend Service
   - type: web
-    name: frontend
+    name: expense-tracker
     env: docker
     dockerContext: frontend/expense-tracker-frontend
     dockerfilePath: frontend/expense-tracker-frontend/Dockerfile
