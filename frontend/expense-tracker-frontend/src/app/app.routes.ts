@@ -6,7 +6,12 @@ import { authGuard } from './guards/auth.guard';
 import { guestGuard } from './guards/guest.guard';
 
 export const routes: Routes = [
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  {
+    path: '',
+    loadComponent: () =>
+      import('./components/shared/landing/landing.component').then((m) => m.LandingComponent),
+    canActivate: [guestGuard],
+  },
 
   // ==================== AUTH ROUTES (Public) ====================
   {

@@ -1,0 +1,200 @@
+<!-- ============================================
+     LANDING PAGE — Premium Hero + Features
+     ============================================ -->
+
+<!-- NAVBAR -->
+<header class="landing-nav">
+  <div class="nav-container">
+    <div class="nav-brand">
+      <i class="fas fa-wallet"></i>
+      <span>ExpenseTracker</span>
+    </div>
+    <div class="nav-actions">
+      <a routerLink="/login" class="btn-nav-outline">Sign In</a>
+      <a routerLink="/register" class="btn-nav-solid">Get Started</a>
+    </div>
+  </div>
+</header>
+
+<!-- HERO SECTION -->
+<section class="hero">
+  <div class="hero-bg-orb orb1"></div>
+  <div class="hero-bg-orb orb2"></div>
+  <div class="hero-bg-orb orb3"></div>
+
+  <div class="hero-content">
+    <div class="hero-badge">
+      <i class="fas fa-bolt"></i>
+      Smart Expense Management
+    </div>
+    <h1>
+      Track Every <span class="gradient-text">Rupee</span><br>
+      with Confidence
+    </h1>
+    <p class="hero-subtitle">
+      A powerful, role-based expense management system for modern teams.
+      Submit, approve, and analyze expenses — all in one place.
+    </p>
+    <div class="hero-cta">
+      <a routerLink="/register" class="btn-hero-primary">
+        <i class="fas fa-rocket"></i> Get Started Free
+      </a>
+      <a routerLink="/login" class="btn-hero-secondary">
+        <i class="fas fa-sign-in-alt"></i> Sign In
+      </a>
+    </div>
+    <div class="hero-trust">
+      <span><i class="fas fa-lock"></i> Secure JWT Auth</span>
+      <span><i class="fas fa-cloud"></i> Cloud Hosted</span>
+      <span><i class="fas fa-mobile-alt"></i> Mobile Ready</span>
+    </div>
+  </div>
+
+  <!-- Hero Visual -->
+  <div class="hero-visual">
+    <div class="dashboard-preview">
+      <div class="preview-header">
+        <div class="preview-dots">
+          <span></span><span></span><span></span>
+        </div>
+        <span class="preview-title">Admin Dashboard</span>
+      </div>
+      <div class="preview-stats">
+        <div class="preview-stat">
+          <div class="preview-stat-icon total"><i class="fas fa-receipt"></i></div>
+          <div>
+            <div class="preview-stat-value">48</div>
+            <div class="preview-stat-label">Total</div>
+          </div>
+        </div>
+        <div class="preview-stat">
+          <div class="preview-stat-icon pending"><i class="fas fa-clock"></i></div>
+          <div>
+            <div class="preview-stat-value">12</div>
+            <div class="preview-stat-label">Pending</div>
+          </div>
+        </div>
+        <div class="preview-stat">
+          <div class="preview-stat-icon approved"><i class="fas fa-check"></i></div>
+          <div>
+            <div class="preview-stat-value">31</div>
+            <div class="preview-stat-label">Approved</div>
+          </div>
+        </div>
+      </div>
+      <div class="preview-chart-bars">
+        <div class="bar" style="height: 40%"></div>
+        <div class="bar" style="height: 65%"></div>
+        <div class="bar" style="height: 50%"></div>
+        <div class="bar" style="height: 80%"></div>
+        <div class="bar" style="height: 60%"></div>
+        <div class="bar active" style="height: 90%"></div>
+        <div class="bar" style="height: 72%"></div>
+      </div>
+      <div class="preview-footer">
+        <span class="preview-amount">Rs. 1,24,500</span>
+        <span class="preview-period">This Month</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS STRIP -->
+<section class="stats-strip">
+  @for (stat of stats; track stat.label) {
+  <div class="strip-stat">
+    <div class="strip-value">{{ stat.value }}</div>
+    <div class="strip-label">{{ stat.label }}</div>
+  </div>
+  }
+</section>
+
+<!-- FEATURES -->
+<section class="features-section">
+  <div class="section-container">
+    <div class="section-header">
+      <div class="section-badge">Features</div>
+      <h2>Everything your team needs</h2>
+      <p>Purpose-built for expense management — from submission to analytics.</p>
+    </div>
+    <div class="features-grid">
+      @for (feature of features; track feature.title) {
+      <div class="feature-card">
+        <div class="feature-icon">
+          <i [class]="feature.icon"></i>
+        </div>
+        <h3>{{ feature.title }}</h3>
+        <p>{{ feature.desc }}</p>
+      </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how-section">
+  <div class="section-container">
+    <div class="section-header">
+      <div class="section-badge">How it works</div>
+      <h2>Simple & Streamlined</h2>
+    </div>
+    <div class="steps-grid">
+      <div class="step">
+        <div class="step-number">1</div>
+        <h3>Register & Verify</h3>
+        <p>Sign up as an employee or admin. Verify your email via OTP.</p>
+      </div>
+      <div class="step-arrow"><i class="fas fa-arrow-right"></i></div>
+      <div class="step">
+        <div class="step-number">2</div>
+        <h3>Submit Expenses</h3>
+        <p>Employees submit expenses with receipts, categories, and descriptions.</p>
+      </div>
+      <div class="step-arrow"><i class="fas fa-arrow-right"></i></div>
+      <div class="step">
+        <div class="step-number">3</div>
+        <h3>Admin Reviews</h3>
+        <p>Admins approve or reject with remarks. Everyone gets email notifications.</p>
+      </div>
+      <div class="step-arrow"><i class="fas fa-arrow-right"></i></div>
+      <div class="step">
+        <div class="step-number">4</div>
+        <h3>Analyze & Export</h3>
+        <p>View analytics, export professional PDF reports, and track trends.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA SECTION -->
+<section class="cta-section">
+  <div class="section-container">
+    <div class="cta-card">
+      <div class="cta-orb"></div>
+      <h2>Ready to streamline your expenses?</h2>
+      <p>Join your team on ExpenseTracker and start managing smarter today.</p>
+      <div class="cta-buttons">
+        <a routerLink="/register" class="btn-hero-primary">
+          <i class="fas fa-user-plus"></i> Create Account
+        </a>
+        <a routerLink="/login" class="btn-hero-secondary light">
+          <i class="fas fa-sign-in-alt"></i> Sign In
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="landing-footer">
+  <div class="footer-container">
+    <div class="footer-brand">
+      <i class="fas fa-wallet"></i> ExpenseTracker
+    </div>
+    <div class="footer-links">
+      <a routerLink="/login">Sign In</a>
+      <a routerLink="/register">Sign Up</a>
+    </div>
+    <p class="footer-copy">© {{ currentYear }} ExpenseTracker. Built with ❤️</p>
+  </div>
+</footer>
