@@ -11,7 +11,7 @@ import { Attachment } from '../../../models/attachment.model';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms'; // If using ngModel
 import { ReactiveFormsModule } from '@angular/forms'; // If using FormGroup
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { RouterLink } from '@angular/router';
 
 // ✅ Import all child components
 import { NavbarComponent } from '../../shared/navbar/navbar.component';
@@ -27,7 +27,6 @@ import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-sp
     FormsModule, // ✅ For ngModel (if needed)
     ReactiveFormsModule, // ✅ For reactive forms (if needed)
     RouterLink, // ✅ For routerLink
-    RouterLinkActive, // ✅ For routerLinkActive
     NavbarComponent, // ✅ For <app-navbar>
     SidebarComponent, // ✅ For <app-sidebar>
     LoadingSpinnerComponent, // ✅ For <app-loading-spinner>

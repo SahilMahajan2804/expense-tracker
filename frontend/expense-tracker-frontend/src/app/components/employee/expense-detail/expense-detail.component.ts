@@ -11,7 +11,7 @@ import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-sp
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms'; // If using ngModel
 import { ReactiveFormsModule } from '@angular/forms'; // If using FormGroup
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-expense-detail',
   templateUrl: './expense-detail.component.html',
@@ -21,7 +21,6 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
     FormsModule, // ✅ For ngModel (if needed)
     ReactiveFormsModule, // ✅ For reactive forms (if needed)
     RouterLink, // ✅ For routerLink
-    RouterLinkActive, // ✅ For routerLinkActive
     NavbarComponent, // ✅ For <app-navbar>
     SidebarComponent, // ✅ For <app-sidebar>
     LoadingSpinnerComponent, // ✅ For <app-loading-spinner>

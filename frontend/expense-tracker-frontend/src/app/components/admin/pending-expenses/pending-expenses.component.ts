@@ -1,6 +1,6 @@
 import { Component, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common'; // ✅ Import CommonModule for pipes
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { AdminService } from '../../../services/admin.service';
@@ -15,7 +15,6 @@ import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-sp
   imports: [
     CommonModule, // ✅ Provides date, slice, currency pipes etc.
     FormsModule, // ✅ For ngModel
-    RouterLink,
     NavbarComponent,
     SidebarComponent,
     LoadingSpinnerComponent,
