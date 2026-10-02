@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -62,10 +63,15 @@ public class ExpenseController {
 
     // ==================== GET EXPENSE BY ID ====================
     @GetMapping("/{expenseId}")
-    public ResponseEntity<?> getExpenseById(@PathVariable Long expenseId) {
+    public ResponseEntity<?> getExpenseById(Authentication authentication, @PathVariable Long expenseId) {
         try {
-            ExpenseResponse expense = expenseService.getExpenseById(expenseId);
+            boolean isAdmin = authentication.getAuthorities().stream()
+                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
+            ExpenseResponse expense = expenseService.getExpenseById(
+                expenseId, authentication.getName(), isAdmin);
             return ResponseEntity.ok(expense);
+        } catch (AccessDeniedException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -81,6 +87,8 @@ public class ExpenseController {
             String email = authentication.getName();
             ExpenseResponse expense = expenseService.updateExpense(expenseId, email, request);
             return ResponseEntity.ok(expense);
+        } catch (AccessDeniedException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -95,6 +103,8 @@ public class ExpenseController {
             String email = authentication.getName();
             expenseService.deleteExpense(expenseId, email);
             return ResponseEntity.ok("Expense deleted successfully");
+        } catch (AccessDeniedException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

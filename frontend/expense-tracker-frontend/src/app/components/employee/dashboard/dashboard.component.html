@@ -58,19 +58,47 @@
       <div class="amount-grid">
         <div class="amount-card">
           <h4>Total Amount Claimed</h4>
-          <p class="amount">₹{{ dashboard.totalAmount | number : '1.2-2' }}</p>
+          <p class="amount">₹{{ dashboard.totalAmount | number: '1.2-2' }}</p>
         </div>
 
         <div class="amount-card">
           <h4>Approved Amount</h4>
-          <p class="amount success">₹{{ dashboard.approvedAmount | number : '1.2-2' }}</p>
+          <p class="amount success">₹{{ dashboard.approvedAmount | number: '1.2-2' }}</p>
         </div>
 
         <div class="amount-card">
           <h4>Pending Amount</h4>
-          <p class="amount warning">₹{{ dashboard.pendingAmount | number : '1.2-2' }}</p>
+          <p class="amount warning">₹{{ dashboard.pendingAmount | number: '1.2-2' }}</p>
         </div>
       </div>
+
+      <section class="charts-grid" aria-label="Expense analytics">
+        <div class="chart-card">
+          <h2>Monthly spending</h2>
+          <div class="chart-body">
+            <canvas
+              baseChart
+              [data]="monthlyChartData"
+              [options]="monthlyChartOptions"
+              [type]="monthlyChartType"
+            >
+            </canvas>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <h2>Spending by category</h2>
+          <div class="chart-body">
+            <canvas
+              baseChart
+              [data]="categoryChartData"
+              [options]="categoryChartOptions"
+              [type]="categoryChartType"
+            >
+            </canvas>
+          </div>
+        </div>
+      </section>
 
       <!-- Quick Actions -->
       <div class="quick-actions">

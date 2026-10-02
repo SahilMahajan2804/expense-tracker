@@ -5,6 +5,7 @@ import com.studiospeeps.expensetracker.entity.*;
 import com.studiospeeps.expensetracker.repo.*;
 import com.studiospeeps.expensetracker.service.ExpenseService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
@@ -13,8 +14,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.math.BigDecimal;
-import java.time.format.TextStyle;
-import java.util.Locale;
+import java.time.YearMonth;
+import java.util.LinkedHashMap;
+import java.util.TreeMap;
 
 @Service
 @RequiredArgsConstructor
@@ -49,9 +51,12 @@ public class ExpenseServiceImpl implements ExpenseService {
     }
 
     @Transactional(readOnly = true)
-    public ExpenseResponse getExpenseById(Long expenseId) {
+    public ExpenseResponse getExpenseById(Long expenseId, String email, boolean isAdmin) {
         Expense expense = expenseRepository.findById(expenseId)
                 .orElseThrow(() -> new RuntimeException("Expense not found"));
+        if (!isAdmin && !expense.getUser().getEmail().equals(email)) {
+            throw new AccessDeniedException("You can only view your own expenses");
+        }
         return mapToResponse(expense);
     }
 
@@ -105,7 +110,7 @@ public class ExpenseServiceImpl implements ExpenseService {
 
         // Only allow update if expense belongs to user
         if (!expense.getUser().getEmail().equals(email)) {
-            throw new RuntimeException("Unauthorized: You can only update your own expenses");
+            throw new AccessDeniedException("You can only update your own expenses");
         }
 
         // Only allow update if still pending
@@ -132,7 +137,7 @@ public class ExpenseServiceImpl implements ExpenseService {
                 .orElseThrow(() -> new RuntimeException("Expense not found"));
 
         if (!expense.getUser().getEmail().equals(email)) {
-            throw new RuntimeException("Unauthorized: You can only delete your own expenses");
+            throw new AccessDeniedException("You can only delete your own expenses");
         }
 
         if (expense.getStatus() != ExpenseStatus.PENDING) {
@@ -201,11 +206,14 @@ public class ExpenseServiceImpl implements ExpenseService {
     }
 
     private Map<String, BigDecimal> getMonthlyTrends(List<Expense> expenses) {
-        return expenses.stream()
+        Map<YearMonth, BigDecimal> totalsByMonth = expenses.stream()
                 .collect(Collectors.groupingBy(
-                        e -> e.getExpenseDate().getMonth().getDisplayName(TextStyle.SHORT, Locale.ENGLISH),
-                        Collectors.reducing(BigDecimal.ZERO, Expense::getAmount, BigDecimal::add)
-                ));
+                e -> YearMonth.from(e.getExpenseDate()),
+                TreeMap::new,
+                Collectors.reducing(BigDecimal.ZERO, Expense::getAmount, BigDecimal::add)));
+        Map<String, BigDecimal> monthlyTrends = new LinkedHashMap<>();
+        totalsByMonth.forEach((month, amount) -> monthlyTrends.put(month.toString(), amount));
+        return monthlyTrends;
     }
 
     private ExpenseResponse mapToResponse(Expense expense) {

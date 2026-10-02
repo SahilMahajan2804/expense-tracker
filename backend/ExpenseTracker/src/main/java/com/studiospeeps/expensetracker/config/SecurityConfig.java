@@ -8,6 +8,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -33,21 +34,18 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests(request -> request
-                        // Public endpoints
-                        .requestMatchers("/register", "/login", "/verify").permitAll()
-
-//                        // Employee endpoints
-//                        .requestMatchers("/api/expenses/**").authenticated()
-//                        .requestMatchers("/api/categories/**").authenticated()
-//                        .requestMatchers("/api/attachments/**").authenticated()
-//                        .requestMatchers("/api/users/me").authenticated()
-//
-//                        // Admin endpoints
-//                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
-//                        .requestMatchers("/api/users").hasRole("ADMIN")
-//                        .requestMatchers("/api/users/{id}").hasRole("ADMIN")
-
-                        .anyRequest().permitAll())
+                    .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/register", "/verify", "/login",
+                        "/forgot-password", "/reset-password").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/greet").permitAll()
+                    .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                    .requestMatchers("/api/users/me", "/api/users/me/**").authenticated()
+                    .requestMatchers("/api/users/**").hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.GET, "/api/categories/**").authenticated()
+                    .requestMatchers("/api/categories/**").hasRole("ADMIN")
+                    .requestMatchers("/api/expenses/**", "/api/attachments/**").authenticated()
+                    .anyRequest().denyAll())
+                .cors(Customizer.withDefaults())
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .csrf(AbstractHttpConfigurer::disable)

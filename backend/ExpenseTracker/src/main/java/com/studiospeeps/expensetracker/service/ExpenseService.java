@@ -17,7 +17,7 @@ public interface ExpenseService {
 
     List<ExpenseResponse> getMyExpensesByStatus(String email, ExpenseStatus status);
 
-    ExpenseResponse getExpenseById(Long expenseId);
+    ExpenseResponse getExpenseById(Long expenseId, String email, boolean isAdmin);
 
     ExpenseResponse updateExpense(Long expenseId, String email, @Valid ExpenseRequest request);
 
